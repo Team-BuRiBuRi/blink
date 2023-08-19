@@ -1,10 +1,27 @@
-interface PatchShopRequestBody extends Pick<Shop, 'id' | 'fee'> {}
+// 상점 수정
+interface PatchShopRequestBody extends Pick<Shop, 'id' | 'fee'> {} // clear
 
+// 물건 추가
 interface PostProductRequestBody
-  extends Pick<Product, 'shopId' | 'price' | 'buyPrice' | 'buyQuantity'> {}
+  extends Pick<
+    Product,
+    'shopId' | 'price' | 'buyPrice' | 'buyQuantity' | 'name' | 'thumbnail'
+  > {} // clear
 
-interface PatchProductRequestBody extends Pick<Product, 'id' | 'price'> {}
+// 물건 수정
+interface PatchProductRequestBody extends Pick<Product, 'id' | 'price'> {} // clear
 
-interface GetShopResponse extends Shop {}
+// 상점 조회
+interface GetShopRequestQuery extends Pick<Shop, 'id'> {} // clear
+interface GetShopResponse extends Shop {} // clear
 
-interface GetProductResponse extends Product {}
+// 물건 조회
+interface GetProductRequestQuery extends Pick<Product, 'id'> {} // clear
+interface GetProductResponse extends Product {} // clear
+
+// 물건 목록 조회
+interface GetProductsResponse {
+  products: Product[];
+} // clear
+
+interface GetAppliedExchangeRateResponse extends AppliedExchangeRate {} // clear
