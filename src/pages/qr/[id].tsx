@@ -61,7 +61,14 @@ const QRProductInfoPage = () => {
 
   return (
     <Flex direction='column' gap='20px' minHeight='100vh'>
-      <Flex w='100%' align='center' gap='10px' mt='15px'>
+      <Flex
+        w='100%'
+        align='center'
+        gap='10px'
+        mt='15px'
+        justify='space-between'
+      >
+        <Box w='24px' />
         <Text fontSize='22px' fontWeight='700' flex={1} textAlign='center'>
           {productInfo?.name}
         </Text>
@@ -71,7 +78,7 @@ const QRProductInfoPage = () => {
       </Flex>
       <Center>
         <Image
-          src={productInfo?.thumbnail}
+          src={`data:image/jpg;base64,${productInfo?.thumbnail}`}
           w='273px'
           h='273px'
           boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
