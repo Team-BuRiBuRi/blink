@@ -1,9 +1,9 @@
+import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate';
 import WhiteBox from '@/components/WhiteBox';
 import { mockGetExchangeRate, mockGetProduct } from '@/libs';
 import { anyToFloat } from '@/libs/utils';
-import { Box, Flex, Image, Input, Select, Text } from '@chakra-ui/react';
+import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { MdArrowBackIosNew } from 'react-icons/md';
 
@@ -134,43 +134,6 @@ const ProductInfoPage = () => {
           ]}
         />
       </Flex>
-    </Flex>
-  );
-};
-
-const DropdownWithExchangeRate = ({
-  dollar,
-  rate,
-}: {
-  dollar: number;
-  rate: AppliedExchangeRate;
-}) => {
-  const [appliedRate, setAppliedRate] = useState<'USD' | 'ARS' | 'BTC'>('USD');
-  const c =
-    appliedRate === 'USD'
-      ? 1
-      : appliedRate === 'ARS'
-      ? rate.ARS
-      : appliedRate === 'BTC'
-      ? rate.BTC
-      : 1; // 너무 구린데 일단 이렇게 합니다
-
-  return (
-    <Flex align='center' gap='12px'>
-      <Text fontSize='16px' fontWeight='600'>
-        {dollar * anyToFloat(c)}
-      </Text>
-      <Select
-        onChange={(c) =>
-          setAppliedRate(c.target.value as 'USD' | 'ARS' | 'BTC')
-        }
-        value={appliedRate}
-        size='md'
-      >
-        <option value='ARS'>ARS</option>
-        <option value='USD'>USD</option>
-        <option value='BTC'>BTC</option>
-      </Select>
     </Flex>
   );
 };

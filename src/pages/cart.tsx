@@ -1,3 +1,4 @@
+import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
 import { mockGetExchangeRate, mockGetProduct } from '@/libs';
 import { LS_CART_ITEMS } from '@/libs/constants';
@@ -15,6 +16,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 // import { GRClose } from 'react-icons/gr';
 
@@ -29,11 +31,12 @@ type CardProps = {
   id: number;
   quantity: number;
   setQuantity: (newQuantity: number) => void;
+  onDelete: () => void;
+  exchangeInfo: AppliedExchangeRate;
 };
 
 function Card(props: CardProps) {
   const productInfo = mockGetProduct(props.id);
-  const exchangeInfo = mockGetExchangeRate();
 
   return (
     <Box
@@ -52,6 +55,7 @@ function Card(props: CardProps) {
         top='20px'
         right='20px'
         size='24px'
+        onClick={props.onDelete}
       />
       <Flex direction={'column'} gap='4px'>
         <HStack justify={'flex-start'} spacing='1'>
@@ -93,13 +97,15 @@ function Card(props: CardProps) {
           <Spacer />
           <Flex gap='4px'>
             <Text as={'b'}>
-              {parseFloat(productInfo.price) * parseFloat(exchangeInfo.ARS)}
+              {parseFloat(productInfo.price) *
+                parseFloat(props.exchangeInfo.ARS)}
             </Text>
             <Text>ARS</Text>
             <Text as={'b'}>{parseFloat(productInfo.price)}</Text>
             <Text>USD</Text>
             <Text as={'b'}>
-              {parseFloat(productInfo.price) * parseFloat(exchangeInfo.BTC)}
+              {parseFloat(productInfo.price) *
+                parseFloat(props.exchangeInfo.BTC)}
             </Text>
             <Text>BTC</Text>
           </Flex>
@@ -114,6 +120,25 @@ export default function Cart() {
   const { item: cartItems, setItem: setCartItems } = useLocalStorageItem<
     CartItemInStorage[]
   >(LS_CART_ITEMS, []);
+  const exchangeInfo = mockGetExchangeRate();
+
+  const [totalAmount, setTotalAmount] = useState(0);
+  useEffect(() => {
+    Promise.all(
+      (cartItems ?? []).map(({ id, quantity }) => ({
+        quantity,
+        product: mockGetProduct(id),
+      }))
+    ).then((allItemsPrice) => {
+      setTotalAmount(
+        allItemsPrice.reduce(
+          (acc, cur) => acc + parseFloat(cur.product.price) * cur.quantity,
+          0
+        )
+      );
+    });
+  }, [cartItems]);
+
   if (!cartItems) return;
 
   const onCheckout = () => {
@@ -155,11 +180,19 @@ export default function Cart() {
                 )
               );
             }}
+            onDelete={() => {
+              setCartItems((prev) => prev?.filter((pc) => pc.id !== c.id));
+            }}
+            exchangeInfo={exchangeInfo}
           />
         ))}
       </Flex>
       <Box flex={1} />
-      <Flex gap='11px' pb='26px'>
+      <Flex gap='14px' pb='26px' direction='column'>
+        <Flex justify='space-between' align='center'>
+          <Text>Total</Text>
+          <DropdownWithExchangeRate dollar={totalAmount} rate={exchangeInfo} />
+        </Flex>
         <Button colorScheme='red' onClick={onCheckout} w='100%'>
           Checkout
         </Button>
