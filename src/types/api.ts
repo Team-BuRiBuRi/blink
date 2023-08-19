@@ -20,6 +20,7 @@ interface GetProductRequestQuery extends Pick<Product, 'id'> { } // clear
 interface GetProductResponse extends Product { } // clear
 
 // 물건 목록 조회
+interface GetProductsRequestQuery extends Partial<Pick<Product, 'shopId'>> {}
 interface GetProductsResponse {
     products: Product[];
 } // clear
