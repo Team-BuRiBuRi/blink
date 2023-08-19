@@ -177,7 +177,7 @@ export default function Home() {
                 </Flex>
               ) : (
                 <Skeleton
-                  width={283}
+                  width={315}
                   height={216}
                   borderRadius='20px'
                 ></Skeleton>
