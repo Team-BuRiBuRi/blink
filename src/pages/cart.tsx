@@ -264,7 +264,7 @@ export default function Cart() {
             }
           />
         </Flex>
-        <Button colorScheme='red' onClick={onOpen} w='100%'>
+        <Button bgColor={'#E2674E'} color={'white'} onClick={onOpen} w='100%'>
           Checkout
         </Button>
       </Flex>

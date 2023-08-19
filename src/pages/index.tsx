@@ -119,7 +119,7 @@ export default function Home() {
         </TabList>
 
         <TabPanels>
-          <TabPanel>
+          <TabPanel padding='20px 0 0 0'>
             <Flex direction={'column'} gap={'20px'}>
               <Flex justifyContent={'space-between'} align={'center'}>
                 <Heading fontWeight={500} size={'20px'}>
