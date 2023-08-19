@@ -1,18 +1,34 @@
 import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate';
 import WhiteBox from '@/components/WhiteBox';
-import { mockGetExchangeRate, mockGetProduct } from '@/libs';
+import useGetProduct from '@/hooks/useGetProduct';
+import { mockGetExchangeRate } from '@/libs';
 import { anyToFloat } from '@/libs/utils';
 import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { MdArrowBackIosNew } from 'react-icons/md';
 
 const ProductInfoPage = () => {
   const productId = useRouter().query.id;
+  const { getProduct } = useGetProduct();
+  const [productInfo, setProduct] = useState<Product | undefined>(undefined);
+  const getCardProduct = useCallback(
+    () =>
+      typeof productId === 'string'
+        ? getProduct({ id: parseFloat(productId) })
+        : undefined,
+    [productId, getProduct]
+  );
+
+  useEffect(() => {
+    getCardProduct()?.then((p) => p && setProduct(p));
+  }, [getCardProduct]);
+
   if (!productId || typeof productId !== 'string')
     return <div>잘못된페이지</div>;
+  if (!productInfo) return <></>;
 
-  const productInfo = mockGetProduct(parseFloat(productId));
   const exchangeInfo = mockGetExchangeRate();
 
   return (

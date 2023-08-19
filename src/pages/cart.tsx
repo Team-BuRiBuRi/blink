@@ -1,4 +1,5 @@
 import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate';
+import useGetProduct from '@/hooks/useGetProduct';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
 import { mockGetExchangeRate, mockGetProduct } from '@/libs';
 import { LS_CART_ITEMS } from '@/libs/constants';
@@ -16,7 +17,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // import { GRClose } from 'react-icons/gr';
 
@@ -36,7 +37,17 @@ type CardProps = {
 };
 
 function Card(props: CardProps) {
-  const productInfo = mockGetProduct(props.id);
+  const { getProduct } = useGetProduct();
+  const [productInfo, setProduct] = useState<Product | undefined>(undefined);
+  const getCardProduct = useCallback(
+    () => getProduct({ id: props.id }),
+    [props.id, getProduct]
+  );
+  useEffect(() => {
+    getCardProduct().then((p) => p && setProduct(p));
+  }, [getCardProduct]);
+
+  if (!productInfo) return <></>;
 
   return (
     <Box
