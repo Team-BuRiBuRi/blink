@@ -7,7 +7,7 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <Container px={30} maxW={375} minH={'100vh'}>
+    <Container bgColor={"gray.100"} px={30} maxW={375} minH={'100vh'}>
       {children}
     </Container>
   );
