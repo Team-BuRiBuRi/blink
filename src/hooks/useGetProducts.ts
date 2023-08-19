@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function useGetProducts() {
   const [isLoading, setIsLoading] = useState(false);

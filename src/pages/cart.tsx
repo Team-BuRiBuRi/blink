@@ -75,7 +75,7 @@ function Card(props: CardProps) {
             fit={'contain'}
             width='60px'
             height='60px'
-            src={productInfo.thumbnail}
+            src={`data:image/png;${productInfo.thumbnail}`}
             alt={productInfo.name}
           />
           <VStack spacing={1}>

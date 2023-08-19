@@ -76,7 +76,7 @@ export default function Home() {
         setLiveRate(xeResponse.to[isBTC ? 'BTC' : 'ARS']);
       }
       const products = await getProductList.getProducts({ shopId });
-      if (products) setProductList(products);
+      if (products) setProductList(products?.products);
       console.log(products);
     };
     fetchShop();

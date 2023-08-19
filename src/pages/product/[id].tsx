@@ -39,7 +39,7 @@ const ProductInfoPage = () => {
   if (!productInfo) return <></>;
 
   return (
-    <Flex direction='column' gap='20px'>
+    <Flex direction='column' gap='20px' pb='20px'>
       <Flex w='100%' align='center' gap='10px' mt='15px'>
         <Box
           cursor='pointer'
@@ -67,7 +67,7 @@ const ProductInfoPage = () => {
           Item Image
         </Text>
         <Image
-          src={productInfo.thumbnail}
+          src={`data:image/png;${productInfo.thumbnail}`}
           alt={productInfo.name}
           w='100px'
           h='100px'
@@ -121,20 +121,12 @@ const ProductInfoPage = () => {
           Sales and Profit
         </Text>
         <WhiteBox
-          rows={[{ left: 'Cost price', right: `${productInfo.totalSales}` }]}
-        />
-      </Flex>
-      <Flex gap='14px' direction='column'>
-        <Text fontSize='20px' fontWeight={500}>
-          Manage Inventory
-        </Text>
-        <WhiteBox
           rows={[
             {
-              left: 'Cost Price',
+              left: 'Cost price',
               right: (
                 <DropdownWithExchangeRate
-                  dollar={parseFloat(productInfo.buyPrice)}
+                  dollar={parseFloat(productInfo.buyprice)}
                   rate={
                     exchangeInfo || {
                       ars: '0',
@@ -148,7 +140,7 @@ const ProductInfoPage = () => {
               left: 'Sales',
               right: (
                 <DropdownWithExchangeRate
-                  dollar={parseFloat(productInfo.totalSales)}
+                  dollar={parseFloat(productInfo.totalsales)}
                   rate={
                     exchangeInfo || {
                       ars: '0',
@@ -163,9 +155,9 @@ const ProductInfoPage = () => {
               right: (
                 <DropdownWithExchangeRate
                   dollar={
-                    parseFloat(productInfo.totalSales) -
-                    parseFloat(productInfo.buyPrice) *
-                      anyToFloat(productInfo.buyQuantity)
+                    parseFloat(productInfo.totalsales) -
+                    parseFloat(productInfo.buyprice) *
+                      anyToFloat(productInfo.buyquantity)
                   }
                   rate={
                     exchangeInfo || {
@@ -175,6 +167,23 @@ const ProductInfoPage = () => {
                   }
                 />
               ),
+            },
+          ]}
+        />
+      </Flex>
+      <Flex gap='14px' direction='column'>
+        <Text fontSize='20px' fontWeight={500}>
+          Manage Inventory
+        </Text>
+        <WhiteBox
+          rows={[
+            {
+              left: 'Total Count',
+              right: `${productInfo.buyquantity}`,
+            },
+            {
+              left: 'Sales',
+              right: `${productInfo.totalsalesquantity}`,
             },
           ]}
         />
