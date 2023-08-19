@@ -81,12 +81,18 @@ export default function Home() {
   }, [isBTC]);
 
   const updateUserPrice = async () => {
+    if (liveRate.length === 0) return;
+    if (Number(toCurrency.price) <= 0 || Number(fromCurrency.price) <= 0) {
+      console.log('nan될뻔');
+      return;
+    }
+
     const currentExchangeRate = isBTC ? exchangeRate.btc : exchangeRate.ars;
     console.log(currentExchangeRate, toCurrency.price, fromCurrency.price);
 
     const newFee =
       parseFloat(toCurrency.price) /
-      (parseFloat(fromCurrency.price) * liveRate[liveRate.length - 1].mid);
+      (parseFloat(fromCurrency.price) * liveRate[liveRate.length - 1]?.mid);
 
     console.log(newFee);
     await patchShop({
