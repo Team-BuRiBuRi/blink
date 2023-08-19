@@ -12,6 +12,7 @@ import {
   HStack,
   Image,
   SimpleGrid,
+  Skeleton,
   Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -70,23 +71,31 @@ const QRProductInfoPage = () => {
         justify='space-between'
       >
         <Box w='24px' />
-        <Text fontSize='22px' fontWeight='700' flex={1} textAlign='center'>
-          {productInfo?.name}
-        </Text>
+        {productInfo ? (
+          <Text fontSize='22px' fontWeight='700' flex={1} textAlign='center'>
+            {productInfo?.name}
+          </Text>
+        ) : (
+          <Skeleton w={247} h={33} borderRadius={20}></Skeleton>
+        )}
         <Box cursor='pointer' onClick={onMoveCartClick}>
           <MdOutlineShoppingCart size='24px' />
         </Box>
       </Flex>
       <Center>
-        <Image
-          src={`data:image/jpg;base64,${productInfo?.thumbnail}`}
-          w='273px'
-          h='273px'
-          boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
-          alt={productInfo?.name}
-          borderRadius='20px'
-          objectFit='contain'
-        />
+        {productInfo ? (
+          <Image
+            src={`data:image/jpg;base64,${productInfo?.thumbnail}`}
+            w='273px'
+            h='273px'
+            boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
+            alt={productInfo?.name}
+            borderRadius='20px'
+            objectFit='contain'
+          />
+        ) : (
+          <Skeleton w={273} h={273} borderRadius={20}></Skeleton>
+        )}
       </Center>
       <Flex gap='16px' direction='column'>
         <Flex justify='space-between'>
