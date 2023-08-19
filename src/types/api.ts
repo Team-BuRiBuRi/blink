@@ -26,9 +26,8 @@ interface GetProductResponse extends Product {} // clear
 interface GetProductsRequestQuery {
   shopId: Product['shopid'];
 }
-interface GetProductsResponse {
-  products: Product[];
-} // clear
+
+type GetProductsResponse = Product[]; // clear
 
 // 적용 환율 조회
 interface GetAppliedExchangeRateResponse extends AppliedExchangeRate {} // clear

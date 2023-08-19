@@ -67,7 +67,7 @@ const ProductInfoPage = () => {
           Item Image
         </Text>
         <Image
-          src={`data:image/png;${productInfo.thumbnail}`}
+          src={`data:image/jpg;base64,${productInfo.thumbnail}`}
           alt={productInfo.name}
           w='100px'
           h='100px'

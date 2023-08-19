@@ -17,7 +17,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { use, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // import { GRClose } from 'react-icons/gr';
 
@@ -74,7 +74,7 @@ function Card(props: CardProps) {
             fit={'contain'}
             width='60px'
             height='60px'
-            src={`data:image/png;${productInfo.thumbnail}`}
+            src={`data:image/jpg;base64,${productInfo.thumbnail}`}
             alt={productInfo.name}
           />
           <VStack spacing={1}>

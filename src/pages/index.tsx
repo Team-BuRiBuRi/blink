@@ -26,11 +26,7 @@ import { format } from 'd3-format';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import {
-  AiOutlineArrowRight,
-  AiOutlinePlus,
-  AiOutlineSearch,
-} from 'react-icons/ai';
+import { AiOutlineArrowRight, AiOutlineSearch } from 'react-icons/ai';
 const PRIMARY_COLOR = '#E2674E';
 
 export default function Home() {
@@ -76,7 +72,7 @@ export default function Home() {
         setLiveRate(xeResponse.to[isBTC ? 'BTC' : 'ARS']);
       }
       const products = await getProductList.getProducts({ shopId });
-      if (products) setProductList(products?.products);
+      if (products !== null) setProductList(products);
       console.log(products);
     };
     fetchShop();
