@@ -1,23 +1,24 @@
 import { useState, useCallback } from 'react';
 
-export default function usePatchProduct() {
+export default function useGetShop() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState<boolean | null>(null);
   const [isError, setIsError] = useState<boolean | null>(null);
 
-  const patchProduct = useCallback(
-    async (patchProductRequestBody: PatchProductRequestBody) => {
+  const getShop = useCallback(
+    async (
+      getShopRequestQuery: GetShopRequestQuery
+    ): Promise<GetShopResponse | null> => {
       setIsLoading(true);
       setIsSuccessful(null);
       setIsError(null);
 
       try {
-        const response = await fetch(`/api/product`, {
-          method: 'PATCH',
+        const response = await fetch(`/api/shop?id=${getShopRequestQuery.id}`, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(patchProductRequestBody),
         });
 
         setIsLoading(false);
@@ -25,17 +26,17 @@ export default function usePatchProduct() {
         if (response.ok) {
           setIsSuccessful(true);
           setIsError(false);
-          return true;
+          return response.json();
         } else {
           setIsSuccessful(false);
           setIsError(true);
-          return false;
+          return null;
         }
       } catch (err) {
         setIsSuccessful(false);
         setIsLoading(false);
         setIsError(true);
-        return false;
+        return null;
       }
     },
     []
@@ -45,6 +46,6 @@ export default function usePatchProduct() {
     isLoading,
     isSuccessful,
     isError,
-    patchProduct,
+    getShop,
   };
 }
