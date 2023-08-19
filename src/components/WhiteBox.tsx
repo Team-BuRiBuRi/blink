@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Divider, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 type EachRow = {
@@ -23,34 +23,26 @@ const WhiteBox = (props: WhiteBoxProps) => {
       boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
     >
       {props.rows.map((r, idx) => {
-        const borderStyle =
-          idx !== props.rows.length - 1
-            ? {
-                borderBottom: '1px solid #c1c1c1',
-              }
-            : {};
         return (
-          <Flex
-            key={idx}
-            justifyContent='space-between'
-            pb='12px'
-            {...borderStyle}
-          >
-            {typeof r.left === 'string' ? (
-              <Text fontSize='16px' fontWeight='400'>
-                {r.left}
-              </Text>
-            ) : (
-              r.left
-            )}
-            {typeof r.right === 'string' ? (
-              <Text fontSize='16px' fontWeight='600'>
-                {r.right}
-              </Text>
-            ) : (
-              r.right
-            )}
-          </Flex>
+          <>
+            <Flex key={idx} justifyContent='space-between' align={'center'}>
+              {typeof r.left === 'string' ? (
+                <Text fontSize='16px' fontWeight='400'>
+                  {r.left}
+                </Text>
+              ) : (
+                r.left
+              )}
+              {typeof r.right === 'string' ? (
+                <Text fontSize='16px' fontWeight='600'>
+                  {r.right}
+                </Text>
+              ) : (
+                r.right
+              )}
+            </Flex>
+            {idx !== props.rows.length - 1 && <Divider />}
+          </>
         );
       })}
     </Flex>

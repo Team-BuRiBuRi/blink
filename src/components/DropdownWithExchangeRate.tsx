@@ -1,4 +1,4 @@
-import { anyToFloat } from '@/libs/utils';
+import { anyToFloat, formatMoney } from '@/libs/utils';
 import { Flex, Select, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -22,7 +22,7 @@ export const DropdownWithExchangeRate = ({
   return (
     <Flex align='center' gap='12px'>
       <Text fontSize='16px' fontWeight='600'>
-        {dollar * anyToFloat(c)}
+        {formatMoney(dollar * anyToFloat(c), appliedRate)}
       </Text>
       <Select
         onChange={(c) =>

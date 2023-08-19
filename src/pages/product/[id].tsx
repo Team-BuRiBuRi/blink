@@ -138,7 +138,7 @@ const ProductInfoPage = () => {
         <WhiteBox
           rows={[
             {
-              left: 'Cost price',
+              left: 'Cost Price',
               right: (
                 <DropdownWithExchangeRate
                   dollar={parseFloat(productInfo.buyprice)}
