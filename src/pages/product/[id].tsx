@@ -1,5 +1,6 @@
 import WhiteBox from '@/components/WhiteBox';
 import { mockGetExchangeRate, mockGetProduct } from '@/libs';
+import { anyToFloat } from '@/libs/utils';
 import { Box, Flex, Image, Input, Select, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -57,7 +58,7 @@ const ProductInfoPage = () => {
               left: 'ARS',
               right: (
                 <Text fontSize='16px' fontWeight='600' mr='14px'>
-                  {productInfo.price * exchangeInfo.ARS}
+                  {parseFloat(productInfo.price) * parseFloat(exchangeInfo.ARS)}
                 </Text>
               ),
             },
@@ -78,7 +79,7 @@ const ProductInfoPage = () => {
               left: 'BTC',
               right: (
                 <Text fontSize='16px' fontWeight='600' mr='14px'>
-                  {productInfo.price * exchangeInfo.BTC}
+                  {parseFloat(productInfo.price) * parseFloat(exchangeInfo.BTC)}
                 </Text>
               ),
             },
@@ -103,7 +104,7 @@ const ProductInfoPage = () => {
               left: 'Cost Price',
               right: (
                 <DropdownWithExchangeRate
-                  dollar={productInfo.buyPrice}
+                  dollar={parseFloat(productInfo.buyPrice)}
                   rate={exchangeInfo}
                 />
               ),
@@ -112,7 +113,7 @@ const ProductInfoPage = () => {
               left: 'Sales',
               right: (
                 <DropdownWithExchangeRate
-                  dollar={productInfo.totalSales}
+                  dollar={parseFloat(productInfo.totalSales)}
                   rate={exchangeInfo}
                 />
               ),
@@ -122,8 +123,9 @@ const ProductInfoPage = () => {
               right: (
                 <DropdownWithExchangeRate
                   dollar={
-                    productInfo.totalSales -
-                    productInfo.buyPrice * productInfo.buyQuantity
+                    parseFloat(productInfo.totalSales) -
+                    parseFloat(productInfo.buyPrice) *
+                      anyToFloat(productInfo.buyQuantity)
                   }
                   rate={exchangeInfo}
                 />
@@ -156,7 +158,7 @@ const DropdownWithExchangeRate = ({
   return (
     <Flex align='center' gap='12px'>
       <Text fontSize='16px' fontWeight='600'>
-        {dollar * c}
+        {dollar * anyToFloat(c)}
       </Text>
       <Select
         onChange={(c) =>
