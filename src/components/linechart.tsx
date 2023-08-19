@@ -8,7 +8,7 @@ import { scaleBand, scaleLinear } from '@visx/scale';
 import { AreaClosed, LinePath } from '@visx/shape';
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface LineChartProps {
   width: number;

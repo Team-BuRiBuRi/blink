@@ -94,7 +94,7 @@ const QRProductInfoPage = () => {
             ARS
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo.price) * parseFloat(exchangeInfo.ARS)}
+            {parseFloat(productInfo.price) * parseFloat(exchangeInfo.ars)}
           </Text>
         </Flex>
         <Flex direction='column' gap='16px'>
@@ -110,7 +110,7 @@ const QRProductInfoPage = () => {
             BTC
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo.price) * parseFloat(exchangeInfo.BTC)}
+            {parseFloat(productInfo.price) * parseFloat(exchangeInfo.btc)}
           </Text>
         </Flex>
       </Flex>

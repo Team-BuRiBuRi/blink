@@ -14,6 +14,6 @@ export const mockGetProduct = (productId: number): GetProductResponse => {
 };
 
 export const mockGetExchangeRate = (): AppliedExchangeRate => ({
-  ARS: '1.3',
-  BTC: '1.5',
+  ars: '1.3',
+  btc: '1.5',
 });

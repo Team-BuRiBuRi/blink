@@ -58,7 +58,7 @@ const ProductInfoPage = () => {
               left: 'ARS',
               right: (
                 <Text fontSize='16px' fontWeight='600' mr='14px'>
-                  {parseFloat(productInfo.price) * parseFloat(exchangeInfo.ARS)}
+                  {parseFloat(productInfo.price) * parseFloat(exchangeInfo.ars)}
                 </Text>
               ),
             },
@@ -79,7 +79,7 @@ const ProductInfoPage = () => {
               left: 'BTC',
               right: (
                 <Text fontSize='16px' fontWeight='600' mr='14px'>
-                  {parseFloat(productInfo.price) * parseFloat(exchangeInfo.BTC)}
+                  {parseFloat(productInfo.price) * parseFloat(exchangeInfo.btc)}
                 </Text>
               ),
             },

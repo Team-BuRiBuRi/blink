@@ -14,9 +14,9 @@ export const DropdownWithExchangeRate = ({
     appliedRate === 'USD'
       ? 1
       : appliedRate === 'ARS'
-      ? rate.ARS
+      ? rate.ars
       : appliedRate === 'BTC'
-      ? rate.BTC
+      ? rate.btc
       : 1; // 너무 구린데 일단 이렇게 합니다
 
   return (

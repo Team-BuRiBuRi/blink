@@ -98,14 +98,14 @@ function Card(props: CardProps) {
           <Flex gap='4px'>
             <Text as={'b'}>
               {parseFloat(productInfo.price) *
-                parseFloat(props.exchangeInfo.ARS)}
+                parseFloat(props.exchangeInfo.ars)}
             </Text>
             <Text>ARS</Text>
             <Text as={'b'}>{parseFloat(productInfo.price)}</Text>
             <Text>USD</Text>
             <Text as={'b'}>
               {parseFloat(productInfo.price) *
-                parseFloat(props.exchangeInfo.BTC)}
+                parseFloat(props.exchangeInfo.btc)}
             </Text>
             <Text>BTC</Text>
           </Flex>

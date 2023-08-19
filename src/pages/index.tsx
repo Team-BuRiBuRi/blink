@@ -13,7 +13,6 @@ import {
   Heading,
   Icon,
   Input,
-  Select,
   Spacer,
   Tab,
   TabList,
@@ -253,8 +252,8 @@ interface ProductEntityProp {
 
 const ProductEntity = ({ product, exchangeRate }: ProductEntityProp) => {
   const usdPrice = product.price;
-  const arsPrice = parseFloat(usdPrice) * parseFloat(exchangeRate.ARS);
-  const btcPrice = parseFloat(usdPrice) * parseFloat(exchangeRate.BTC);
+  const arsPrice = parseFloat(usdPrice) * parseFloat(exchangeRate.ars);
+  const btcPrice = parseFloat(usdPrice) * parseFloat(exchangeRate.btc);
 
   return (
     <Flex
