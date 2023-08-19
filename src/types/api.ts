@@ -24,4 +24,5 @@ interface GetProductsResponse {
   products: Product[];
 } // clear
 
+// 적용 환율 조회
 interface GetAppliedExchangeRateResponse extends AppliedExchangeRate {} // clear
