@@ -18,6 +18,60 @@ export default async function handler(
       }
 
       await sql`UPDATE shop SET Fee=${body.fee} WHERE id=${body.id};`;
+
+      // fee 먹인 채로 상품 els 업데이트
+      const accessToken = (await sql`SELECT accesstoken FROM Auth;`).rows[0]
+        .accesstoken;
+
+      // 해당 shop의 모든 상품 불러오기
+      const products = (
+        await sql`SELECT * FROM product WHERE shopId = ${body.id};`
+      ).rows;
+
+      const { ars: appliedARS, btc: appliedBTC } = (
+        await sql`SELECT * FROM appliedexchangerate`
+      ).rows[0];
+
+      // 모든 상품의 els 업데이트
+      for (const product of products) {
+        const bodyInput = await fetch(
+          `http://3.143.203.132:3000?id=${product.id}&name=${
+            product.name
+          }&usd=${Number(product.price) * Number(body.fee)}&ars=${
+            Number(product.price) * Number(body.fee) * Number(appliedARS)
+          }&brc=${
+            Number(product.price) * Number(body.fee) * Number(appliedBTC)
+          }`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+          .then((res) => res.json())
+          .catch((err) => console.log(err));
+
+        const result = await fetch(
+          'https://stage00.common.solumesl.com/common/api/v2/common/labels/image?company=JC04&store=1111',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + accessToken,
+            },
+            body: JSON.stringify(bodyInput),
+          }
+        )
+          .then((res) => res.json())
+          .catch((err) => console.log(err));
+
+        console.log(parseFloat(product.price));
+
+        console.log(parseFloat(body.fee));
+        console.log(parseFloat(appliedBTC));
+      }
+
       return response.status(200).json({ success: true });
     } catch (error) {
       return response.status(500).json({ error });

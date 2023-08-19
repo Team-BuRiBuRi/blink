@@ -30,7 +30,7 @@ export default async function handler(
         const totalSalesQuantity = Number(product.rows[0].totalsalesquantity);
 
         await sql`UPDATE product SET totalSales = ${
-          totalSales + price * quantity * (1 + fee)
+          totalSales + price * quantity * fee
         }, totalSalesQuantity = ${totalSalesQuantity + quantity} WHERE id = ${
           element.productId
         };`;

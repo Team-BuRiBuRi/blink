@@ -44,7 +44,45 @@ export default async function handler(
       }
 
       await sql`UPDATE product SET price = ${body.price} WHERE id = ${body.id};`;
-      //  fee 먹인 채로 상품 els 업데이트
+
+      const accessToken = (await sql`SELECT accesstoken FROM Auth;`).rows[0]
+        .accesstoken;
+
+      const shop = (await sql`SELECT * FROM shop WHERE id = ${product.shopId};`)
+        .rows[0];
+
+      const { ars: appliedARS, btc: appliedBTC } = (
+        await sql`SELECT * FROM appliedexchangerate`
+      ).rows[0];
+
+      await fetch(
+        'https://stage00.common.solumesl.com/common/api/v2/common/labels/image?company=JC04&store=1111',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + accessToken,
+          },
+          body: JSON.stringify(
+            await fetch(
+              `http://3.143.203.132:3000?id=${product.id}&name=${
+                product.name
+              }&usd=${Number(body.price) * Number(shop.fee)}&ars=${
+                Number(body.price) * Number(shop.fee) * Number(appliedARS)
+              }&brc=${
+                Number(body.price) * Number(shop.fee) * Number(appliedBTC)
+              }`,
+              {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              }
+            )
+          ),
+        }
+      );
+
       return response.status(200).json({ success: true });
     } catch (error) {
       return response.status(500).json({ error });
