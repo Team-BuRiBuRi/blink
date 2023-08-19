@@ -8,6 +8,8 @@ interface Shop {
 // 모든 price는 USD 기준
 interface Product {
   id: number;
+  name: string;
+  thumbnail: string;
   shopId: number;
   name: string;
   thumbnail: string;
