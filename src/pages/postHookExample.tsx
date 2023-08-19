@@ -1,5 +1,4 @@
-import usePatchShop from '@/hooks/patchShop';
-import usePostProduct from '@/hooks/postProduct';
+import usePostProduct from '@/hooks/usePostProduct';
 
 export default function Page() {
   const { isLoading, isSuccessful, isError, postProduct } = usePostProduct();

@@ -1,4 +1,4 @@
-import usePatchShop from '@/hooks/patchShop';
+import usePatchShop from '@/hooks/usePatchShop';
 
 export default function Page() {
   const { isLoading, isSuccessful, isError, patchShop } = usePatchShop();
