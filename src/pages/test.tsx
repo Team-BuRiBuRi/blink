@@ -6,13 +6,8 @@ import QRCode from '../libs/qr';
 
 export default function Test() {
   const canvasRef = useRef(null);
-  const FONT_SIZE_XXL = 30;
-  const FONT_SIZE_XL = 25;
-  const FONT_SIZE_LG = 30;
-  const FONT_SIZE_SM = 30;
 
   const FONT_SIZE_TITLE = 30;
-
   const FONT_SIZE_TIMESTAMP = 12;
   const FONT_SIZE_ARS = 24;
   const FONT_SIZE_USD = 14;
@@ -45,15 +40,15 @@ export default function Test() {
     ctx.font = `bold ${FONT_SIZE_TITLE}px Impact`;
     ctx.fillText(
       productName,
-      FONT_SIZE_LG / 2 + PADDING,
-      FONT_SIZE_LG + PADDING / 2
+      FONT_SIZE_TITLE / 2 + PADDING,
+      FONT_SIZE_TITLE + PADDING / 2
     );
 
     // Line
     // draw a line under the title
     ctx.beginPath();
-    ctx.moveTo(10, FONT_SIZE_LG + PADDING);
-    ctx.lineTo(CANVAS_WIDTH - 10, FONT_SIZE_LG + PADDING);
+    ctx.moveTo(10, FONT_SIZE_TITLE + PADDING);
+    ctx.lineTo(CANVAS_WIDTH - 10, FONT_SIZE_TITLE + PADDING);
     ctx.stroke();
 
     ctx.font = `${FONT_SIZE_TIMESTAMP}px Impact`;
@@ -79,7 +74,7 @@ export default function Test() {
     // ctx.fillText(
     //   `${productPriceARS} ARS`,
     //   CANVAS_WIDTH - productPriceText.width - PADDING,
-    //   CANVAS_HEIGHT - FONT_SIZE_LG
+    //   CANVAS_HEIGHT - FONT_SIZE_TITLE
     // );
 
     ctx.fillText(
@@ -140,18 +135,6 @@ export default function Test() {
     };
 
     img.src = url;
-
-    // ctx.font = `bold ${FONT_SIZE_XXL}px Impact`;
-    // const currencyText = ctx.measureText(currency);
-    // ctx.fillText(
-    //   currency,
-    //   CANVAS_WIDTH -
-    //     currencyText.width -
-    //     PADDING -
-    //     productPriceText.width -
-    //     PADDING,
-    //   CANVAS_HEIGHT - FONT_SIZE_LG
-    // );
 
     return canvas;
   };
