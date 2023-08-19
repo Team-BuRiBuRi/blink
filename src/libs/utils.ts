@@ -20,6 +20,10 @@ export const setLocalStorage = <T>(key: string, value: T) => {
   localStorage.setItem(key, stringifiedItem);
 };
 
+export const objectUrlToBlob = (objectUrl: string): Promise<Blob> => {
+  return fetch(objectUrl).then((res) => res.blob());
+};
+
 export function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

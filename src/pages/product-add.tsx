@@ -1,6 +1,6 @@
 import ImageInput from '@/components/ImageInput';
 import usePostProduct from '@/hooks/usePostProduct';
-import { blobToBase64 } from '@/libs/utils';
+import { blobToBase64, objectUrlToBlob } from '@/libs/utils';
 import { Box, Button, Flex, Input, SimpleGrid, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
@@ -8,8 +8,8 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 
 const AddProductPage = () => {
   const router = useRouter();
-  const { isLoading, isSuccessful, isError, postProduct } = usePostProduct();
-  const [thumbnailBlob, setThumbnailBlob] = useState<string | null>(null);
+  const { postProduct } = usePostProduct();
+  const [thumbnail, setThumbnailBlob] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const clickFileInputRef = () =>
     fileInputRef.current && fileInputRef.current.click();
@@ -19,23 +19,18 @@ const AddProductPage = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const onClickConfirm = async () => {
-    if (!thumbnailBlob) return;
-    console.log({
-      shopId: 1,
-      price: priceInputRef.current?.value ?? '',
-      buyPrice: buyPriceInputRef.current?.value ?? '',
-      buyQuantity: parseFloat(buyQuantityInputRef.current?.value ?? '0'),
-      name: nameInputRef.current?.value ?? '',
-      thumbnail: thumbnailBlob,
-    });
-    const thumbnailBase64 = await blobToBase64(new Blob([thumbnailBlob]));
+    if (!thumbnail) return;
+
+    const thumbnailBlob = await objectUrlToBlob(thumbnail);
+    const thumbnailBase64 = await blobToBase64(thumbnailBlob);
+
     const patchProductResponse = await postProduct({
       shopId: 1,
       price: priceInputRef.current?.value ?? '',
       buyPrice: buyPriceInputRef.current?.value ?? '',
       buyQuantity: parseFloat(buyQuantityInputRef.current?.value ?? '0'),
       name: nameInputRef.current?.value ?? '',
-      thumbnail: thumbnailBase64,
+      thumbnail: thumbnailBase64.split(',')[1],
     });
     if (patchProductResponse === true) {
       router.push(`/`); //TODO : 이 아이템의 PK를 받아 그 페이지로 보낸다. `/product/${productId}`
@@ -69,7 +64,7 @@ const AddProductPage = () => {
         <ImageInput
           onClickInput={clickFileInputRef}
           ref={fileInputRef}
-          thumbnailBlob={thumbnailBlob}
+          thumbnailBlob={thumbnail}
           setThumbnailBlob={setThumbnailBlob}
         />
       </Flex>
