@@ -67,9 +67,9 @@ const ProductInfoPage = () => {
       </Flex>
       <Flex gap='14px' direction='column'>
         <Text fontSize='20px' fontWeight={500}>
-          Item name
+          Item Name
         </Text>
-        <Input defaultValue={productInfo.name} />
+        <Input defaultValue={productInfo.name} bgColor={'white'} />
       </Flex>
       <Flex gap='14px' direction='column'>
         <Text fontSize='20px' fontWeight={500}>
