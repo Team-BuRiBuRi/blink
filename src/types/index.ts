@@ -1,15 +1,17 @@
+interface Price {
+  pivotType: 'ARS' | 'USD' | 'BTC';
+  pivotPrice: number;
+}
+
 interface Product {
   id: number;
   name: string;
   thumbnail: string;
-  displayPrice: {
-    pivotType: 'ARS' | 'USD' | 'BTC';
-    pivotPrice: number;
-  };
+  displayPrice: Price;
 }
 
 interface SupplierProduct extends Product {
-  originalPrice: { btc: number };
+  originalPrice: Price;
   numSales: number;
 }
 
@@ -17,7 +19,11 @@ interface SupplierProduct extends Product {
 
 interface API {
   getProductInfo: (productID: number) => SupplierProduct | undefined;
-  setPrice: (newPrice: {
+  setDisplayPrice: (newPrice: {
+    pivotType: 'ARS' | 'USD' | 'BTC';
+    pivotPrice: number;
+  }) => boolean;
+  setOriginalPrice: (newPrice: {
     pivotType: 'ARS' | 'USD' | 'BTC';
     pivotPrice: number;
   }) => boolean;
