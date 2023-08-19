@@ -5,19 +5,28 @@ export default function useGetProducts() {
   const [isSuccessful, setIsSuccessful] = useState<boolean | null>(null);
   const [isError, setIsError] = useState<boolean | null>(null);
 
-  const getProducts =
-    useCallback(async (): Promise<GetProductsResponse | null> => {
+  const getProducts = useCallback(
+    async (
+      getProductsRequestQuery: GetProductsRequestQuery
+    ): Promise<GetProductsResponse | null> => {
       setIsLoading(true);
       setIsSuccessful(null);
       setIsError(null);
 
       try {
-        const response = await fetch(`/api/product`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await fetch(
+          `/api/product${
+            getProductsRequestQuery.shopId
+              ? `?shopId=${getProductsRequestQuery.shopId}`
+              : ''
+          }`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
 
         setIsLoading(false);
 
@@ -36,7 +45,9 @@ export default function useGetProducts() {
         setIsError(true);
         return null;
       }
-    }, []);
+    },
+    []
+  );
 
   return {
     isLoading,

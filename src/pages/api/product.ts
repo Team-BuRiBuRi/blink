@@ -41,6 +41,7 @@ export default async function handler(
       }
 
       await sql`UPDATE product SET price = ${body.price} WHERE id = ${body.id};`;
+      // fee 먹인 채로 상품 els 업데이트
       return response.status(200).json({ success: true });
     } catch (error) {
       return response.status(500).json({ error });
@@ -49,9 +50,24 @@ export default async function handler(
     try {
       const id = request.query.id as string;
       if (id === undefined) {
-        const products = (await sql`SELECT * FROM product;`).rows;
+        const shopId = request.query.shopId as string;
+        if (shopId === undefined) {
+          const products = (await sql`SELECT * FROM product;`).rows;
 
-        return response.status(200).json(products);
+          return response.status(200).json(products);
+        } else {
+          const shop = (await sql`SELECT * FROM shop WHERE id = ${shopId};`)
+            .rows[0];
+          if (!shop) {
+            return response.status(404).json({ error: 'Shop not found' });
+          }
+
+          const products = (
+            await sql`SELECT * FROM product WHERE shopId = ${shopId};`
+          ).rows;
+
+          return response.status(200).json(products);
+        }
       } else {
         const product = (await sql`SELECT * FROM product WHERE id = ${id};`)
           .rows[0];
