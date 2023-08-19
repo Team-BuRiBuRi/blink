@@ -6,12 +6,12 @@ export default async function handler(
   response: NextApiResponse
 ) {
   try {
-    const petName = 'petName' + Date.now();
-    const ownerName = 'ownerName' + Date.now();
-
-    await sql`INSERT INTO Pets (Name, Owner) VALUES (${petName}, ${ownerName});`;
+    // const petName = 'petName' + Date.now();
+    // const ownerName = 'ownerName' + Date.now();
+    // await sql`INSERT INTO Pets (Name, Owner) VALUES (${petName}, ${ownerName});`;
+    await fetch('https://stage00.common.solumesl.com/api/v2/');
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return response.status(500).json({ error });
   }
 
