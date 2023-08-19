@@ -26,3 +26,10 @@ interface GetProductsResponse {
 
 // 적용 환율 조회
 interface GetAppliedExchangeRateResponse extends AppliedExchangeRate {} // clear
+
+// 물건 구매
+interface ElementForBuyProduct {
+  productId: number;
+  quantity: number;
+}
+type PostBuyProductRequestBody = ElementForBuyProduct[]; // clear
