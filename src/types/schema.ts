@@ -9,6 +9,7 @@ interface Shop {
 interface Product {
   id: number;
   shopId: number;
+  name: string;
   // 판매하고 싶은 금액 - 기계 전부 업데이트
   price: number;
   // 살 때 가격 - 고정
