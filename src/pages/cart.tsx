@@ -13,9 +13,16 @@ import {
   Icon,
   IconButton,
   Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
   Spacer,
   Text,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -133,6 +140,7 @@ export default function Cart() {
     CartItemInStorage[]
   >(LS_CART_ITEMS, []);
   const { getExchangeRate } = useGetExchangeRate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [exchangeInfo, setExchangeInfo] =
     useState<GetAppliedExchangeRateResponse | null>(null);
 
@@ -175,6 +183,7 @@ export default function Cart() {
     );
 
     setCartItems([]);
+    onClose();
   };
 
   return (
@@ -239,10 +248,34 @@ export default function Cart() {
             }
           />
         </Flex>
-        <Button colorScheme='red' onClick={onCheckout} w='100%'>
+        <Button colorScheme='red' onClick={onOpen} w='100%'>
           Checkout
         </Button>
       </Flex>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        motionPreset='slideInBottom'
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text size='xl' fontWeight='600'>
+              Are you sure?
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme='gray' mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button colorScheme='red' mr={3} onClick={onCheckout}>
+              Checkout
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 }
