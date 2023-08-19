@@ -4,6 +4,7 @@ import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetProduct from '@/hooks/useGetProduct';
 import useGetShop from '@/hooks/useGetShop';
 import { anyToFloat, formatMoney } from '@/libs/utils';
+import usePatchProduct from '@/hooks/usePatchProduct';
 import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -23,6 +24,7 @@ const ProductInfoPage = () => {
         : undefined,
     [productId, getProduct]
   );
+  const { patchProduct } = usePatchProduct();
 
   const { getShop } = useGetShop();
   const { getExchangeRate } = useGetExchangeRate();
@@ -112,6 +114,12 @@ const ProductInfoPage = () => {
                   textAlign='right'
                   fontSize='16px'
                   fontWeight='600'
+                  onBlur={(e) => {
+                    patchProduct({
+                      id: productInfo.id,
+                      price: e.target.value,
+                    });
+                  }}
                 />
               ),
             },
