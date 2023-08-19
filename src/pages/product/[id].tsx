@@ -2,7 +2,8 @@ import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate'
 import WhiteBox from '@/components/WhiteBox';
 import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetProduct from '@/hooks/useGetProduct';
-import { anyToFloat } from '@/libs/utils';
+import useGetShop from '@/hooks/useGetShop';
+import { anyToFloat, formatMoney } from '@/libs/utils';
 import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -14,6 +15,7 @@ const ProductInfoPage = () => {
   const productId = useRouter().query.id;
   const { getProduct } = useGetProduct();
   const [productInfo, setProduct] = useState<Product | undefined>(undefined);
+  const [fee, getFee] = useState(1);
   const getCardProduct = useCallback(
     () =>
       typeof productId === 'string'
@@ -22,6 +24,7 @@ const ProductInfoPage = () => {
     [productId, getProduct]
   );
 
+  const { getShop } = useGetShop();
   const { getExchangeRate } = useGetExchangeRate();
   const [exchangeInfo, setExchangeInfo] =
     useState<GetAppliedExchangeRateResponse | null>(null);
@@ -33,6 +36,10 @@ const ProductInfoPage = () => {
   useEffect(() => {
     getExchangeRate().then((e) => e && setExchangeInfo(e));
   }, [getExchangeRate]);
+
+  useEffect(() => {
+    getShop({ id: 1 }).then((s) => s && getFee(parseFloat(s.fee)));
+  }, [getShop]);
 
   if (!productId || typeof productId !== 'string')
     return <div>잘못된페이지</div>;
@@ -86,8 +93,12 @@ const ProductInfoPage = () => {
               left: 'ARS',
               right: (
                 <Text fontSize='16px' fontWeight='600' mr='14px'>
-                  {parseFloat(productInfo.price) *
-                    parseFloat(exchangeInfo ? exchangeInfo.ars : '0')}
+                  {formatMoney(
+                    parseFloat(productInfo.price) *
+                      parseFloat(exchangeInfo ? exchangeInfo.ars : '0') *
+                      fee,
+                    'ARS'
+                  )}
                 </Text>
               ),
             },
@@ -108,8 +119,12 @@ const ProductInfoPage = () => {
               left: 'BTC',
               right: (
                 <Text fontSize='16px' fontWeight='600' mr='14px'>
-                  {parseFloat(productInfo.price) *
-                    parseFloat(exchangeInfo ? exchangeInfo.btc : '0')}
+                  {formatMoney(
+                    parseFloat(productInfo.price) *
+                      parseFloat(exchangeInfo ? exchangeInfo.btc : '0') *
+                      fee,
+                    'BTC'
+                  )}
                 </Text>
               ),
             },
