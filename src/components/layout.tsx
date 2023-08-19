@@ -1,9 +1,16 @@
-import React from 'react';
-import { Box, Flex, VStack, Heading, Link, Container } from '@chakra-ui/react';
-import { ChakraProvider, CSSReset, theme } from '@chakra-ui/react';
+import React, { ReactNode } from 'react';
+import { Container } from '@chakra-ui/react';
 
-const Layout = ({ children }) => {
-  return <Container>{children}</Container>;
+type LayoutProps = {
+  children: ReactNode;
+};
+
+const Layout = ({ children }: LayoutProps) => {
+  return (
+    <Container px={30} maxW={375} minH={'100vh'}>
+      {children}
+    </Container>
+  );
 };
 
 export default Layout;
