@@ -4,6 +4,7 @@ import useGetProduct from '@/hooks/useGetProduct';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
 import usePostBuyProduct from '@/hooks/usePostBuyProduct';
 import { LS_CART_ITEMS } from '@/libs/constants';
+import { formatMoney } from '@/libs/utils';
 import { CartItemInStorage } from '@/types/misc';
 import {
   Box,
@@ -116,15 +117,23 @@ function Card(props: CardProps) {
           <Spacer />
           <Flex gap='4px'>
             <Text as={'b'}>
-              {parseFloat(productInfo.price) *
-                parseFloat(props.exchangeInfo.ars)}
+              {formatMoney(
+                parseFloat(productInfo.price) *
+                  parseFloat(props.exchangeInfo.ars),
+                'ARS'
+              )}
             </Text>
             <Text>ARS</Text>
-            <Text as={'b'}>{parseFloat(productInfo.price)}</Text>
+            <Text as={'b'}>
+              {formatMoney(parseFloat(productInfo.price), 'USD')}
+            </Text>
             <Text>USD</Text>
             <Text as={'b'}>
-              {parseFloat(productInfo.price) *
-                parseFloat(props.exchangeInfo.btc)}
+              {formatMoney(
+                parseFloat(productInfo.price) *
+                  parseFloat(props.exchangeInfo.btc),
+                'BTC'
+              )}
             </Text>
             <Text>BTC</Text>
           </Flex>

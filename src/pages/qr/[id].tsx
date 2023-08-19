@@ -2,6 +2,7 @@ import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetProduct from '@/hooks/useGetProduct';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
 import { LS_CART_ITEMS } from '@/libs/constants';
+import { formatMoney } from '@/libs/utils';
 import { CartItemInStorage } from '@/types/misc';
 import {
   Box,
@@ -84,6 +85,7 @@ const QRProductInfoPage = () => {
           boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
           alt={productInfo?.name}
           borderRadius='20px'
+          objectFit='contain'
         />
       </Center>
       <Flex gap='16px' direction='column'>
@@ -117,9 +119,12 @@ const QRProductInfoPage = () => {
             ARS
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo ? productInfo.price : '0') *
-              parseFloat(exchangeInfo ? exchangeInfo.ars : '0') *
-              quantity}
+            {formatMoney(
+              parseFloat(productInfo ? productInfo.price : '0') *
+                parseFloat(exchangeInfo ? exchangeInfo.ars : '0') *
+                quantity,
+              'ARS'
+            )}
           </Text>
         </Flex>
         <Flex direction='column' gap='16px'>
@@ -127,7 +132,10 @@ const QRProductInfoPage = () => {
             USD
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo ? productInfo.price : '0') * quantity}
+            {formatMoney(
+              parseFloat(productInfo ? productInfo.price : '0') * quantity,
+              'USD'
+            )}
           </Text>
         </Flex>
         <Flex direction='column' gap='16px'>
@@ -135,9 +143,12 @@ const QRProductInfoPage = () => {
             BTC
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo ? productInfo.price : '0') *
-              parseFloat(exchangeInfo ? exchangeInfo.btc : '0') *
-              quantity}
+            {formatMoney(
+              parseFloat(productInfo ? productInfo.price : '0') *
+                parseFloat(exchangeInfo ? exchangeInfo.btc : '0') *
+                quantity,
+              'BTC'
+            )}
           </Text>
         </Flex>
       </Flex>

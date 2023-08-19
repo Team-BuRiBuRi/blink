@@ -280,6 +280,7 @@ const ProductEntity = ({ product, exchangeRate }: ProductEntityProp) => {
             width={60}
             height={60}
             src={`data:image/jpg;base64,${product.thumbnail}`}
+            objectFit='contain'
             alt='thumbnail'
           />
         </Box>
