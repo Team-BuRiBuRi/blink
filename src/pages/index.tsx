@@ -14,7 +14,9 @@ import {
   Heading,
   Icon,
   Input,
+  Skeleton,
   Spacer,
+  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -50,19 +52,19 @@ export default function Home() {
   const [liveRate, setLiveRate] = useState<Price[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const getShop = useGetShop();
-  const patchShop = usePatchShop();
-  const getExchangeRate = useGetExchangeRate();
-  const getLiveExchangeRate = useGetLiveExchangeRate();
-  const getProductList = useGetProducts();
+  const { getShop } = useGetShop();
+  const { patchShop } = usePatchShop();
+  const { getExchangeRate } = useGetExchangeRate();
+  const { getLiveExchangeRate } = useGetLiveExchangeRate();
+  const { getProducts } = useGetProducts();
 
   useEffect(() => {
     const fetchShop = async () => {
-      const rate = await getExchangeRate.getExchangeRate();
+      const rate = await getExchangeRate();
       if (rate) setExchangeRate(rate);
-      const shop = await getShop.getShop({ id: shopId });
+      const shop = await getShop({ id: shopId });
       if (shop) setFee(parseFloat(shop.fee));
-      const xeResponse = await getLiveExchangeRate.getLiveExchangeRate({
+      const xeResponse = await getLiveExchangeRate({
         from: 'USD',
         to: isBTC ? 'BTC' : 'ARS',
         start: '2023-08-11',
@@ -71,14 +73,14 @@ export default function Home() {
       if (xeResponse) {
         setLiveRate(xeResponse.to[isBTC ? 'BTC' : 'ARS']);
       }
-      const products = await getProductList.getProducts({ shopId });
+      const products = await getProducts({ shopId });
       if (products !== null) setProductList(products);
       console.log(products);
     };
     fetchShop();
   }, [isBTC]);
 
-  const updateUserPrice = () => {
+  const updateUserPrice = async () => {
     const currentExchangeRate = isBTC ? exchangeRate.btc : exchangeRate.ars;
     console.log(currentExchangeRate, toCurrency.price, fromCurrency.price);
 
@@ -87,7 +89,7 @@ export default function Home() {
       (parseFloat(fromCurrency.price) * liveRate[liveRate.length - 1].mid);
 
     console.log(newFee);
-    patchShop.patchShop({
+    await patchShop({
       id: shopId,
       fee: `${newFee}`,
     });
@@ -154,14 +156,14 @@ export default function Home() {
                   </Center>
                 </Flex>
               </Flex>
-              <Flex
-                p={2}
-                justify='center'
-                bg='white'
-                borderRadius='20px'
-                boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
-              >
-                {liveRate && (
+              {liveRate.length > 0 ? (
+                <Flex
+                  p={2}
+                  justify='center'
+                  bg='white'
+                  borderRadius='20px'
+                  boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
+                >
                   <LineChart
                     width={375}
                     height={200}
@@ -170,9 +172,14 @@ export default function Home() {
                     data={liveRate}
                     currency={isBTC ? 'BTC' : 'ARS'}
                   />
-                )}
-              </Flex>
-
+                </Flex>
+              ) : (
+                <Skeleton
+                  width={283}
+                  height={216}
+                  borderRadius='20px'
+                ></Skeleton>
+              )}
               <Text fontSize='md' fontWeight={500}>
                 Set User Price
               </Text>
@@ -213,8 +220,8 @@ export default function Home() {
                 borderRadius={6}
                 p={'6px'}
                 mt={5}
-                onClick={() => {
-                  updateUserPrice();
+                onClick={async () => {
+                  await updateUserPrice();
                 }}
               >
                 Update
@@ -234,13 +241,26 @@ export default function Home() {
                   Add an Item
                 </Button>
               </Flex>
-              {productList.map((product, i) => (
-                <ProductEntity
-                  key={`${i}`}
-                  product={product}
-                  exchangeRate={exchangeRate}
-                />
-              ))}
+              {productList.length > 0 ? (
+                productList.map((product, i) => (
+                  <ProductEntity
+                    key={`${i}`}
+                    product={product}
+                    exchangeRate={exchangeRate}
+                  />
+                ))
+              ) : (
+                <Flex gap={'20px'} flexDirection={'column'}>
+                  <Skeleton height={108.5} borderRadius='20px' />
+                  <Skeleton height={108.5} borderRadius='20px' />
+                  <Skeleton height={108.5} borderRadius='20px' />
+                  <Skeleton height={108.5} borderRadius='20px' />
+                  <Skeleton height={108.5} borderRadius='20px' />
+                  <Skeleton height={108.5} borderRadius='20px' />
+                  <Skeleton height={108.5} borderRadius='20px' />
+                  <Skeleton height={108.5} borderRadius='20px' />
+                </Flex>
+              )}
             </Flex>
           </TabPanel>
         </TabPanels>
