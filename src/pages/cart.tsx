@@ -1,15 +1,14 @@
 import {
   Box,
   Button,
-  Stack,
-  VStack,
-  HStack,
-  Text,
-  Image,
   Flex,
-  Spacer,
-  IconButton,
+  HStack,
   Icon,
+  IconButton,
+  Image,
+  Spacer,
+  Text,
+  VStack,
 } from '@chakra-ui/react';
 
 // import { GRClose } from 'react-icons/gr';
@@ -39,11 +38,16 @@ function Card() {
         position='absolute'
         top={2}
         right={2}
-        // onClick={onClose}
       />
       <Flex direction={'column'}>
         <HStack justify={'flex-start'} spacing='1'>
-          <Image fit={'contain'} width={55} height={55} src='tomato.png' />
+          <Image
+            fit={'contain'}
+            width={55}
+            height={55}
+            src='tomato.png'
+            alt=''
+          />
           <VStack spacing={1}>
             <Text textStyle='lg' fontWeight='medium'>
               Tomato
