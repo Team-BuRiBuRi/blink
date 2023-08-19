@@ -53,13 +53,13 @@ const AddProductPage = () => {
       </Flex>
       <Flex gap='14px' direction='column'>
         <Text fontSize='20px' fontWeight={500}>
-          Item name
+          Item Name
         </Text>
-        <Input ref={nameInputRef} />
+        <Input ref={nameInputRef} bgColor={'white'} />
       </Flex>
       <Flex gap='14px' direction='column'>
         <Text fontSize='20px' fontWeight={500}>
-          Item image
+          Item Image
         </Text>
         <ImageInput
           onClickInput={clickFileInputRef}
@@ -70,21 +70,21 @@ const AddProductPage = () => {
       </Flex>
       <Flex gap='14px' direction='column'>
         <Text fontSize='20px' fontWeight={500}>
-          Cost price
+          Cost Price
         </Text>
-        <Input type='number' ref={buyPriceInputRef} />
+        <Input type='number' ref={buyPriceInputRef} bgColor={'white'} />
       </Flex>
       <Flex gap='14px' direction='column'>
         <Text fontSize='20px' fontWeight={500}>
-          Total count
+          Total Count
         </Text>
-        <Input type='number' ref={buyQuantityInputRef} />
+        <Input type='number' ref={buyQuantityInputRef} bgColor={'white'} />
       </Flex>
       <Flex gap='14px' direction='column'>
-        <Text fontSize='20px' fontWeight={500}>
-          Sale price
+        <Text fontSize='20px' fontWeight={500} bgColor={'white'}>
+          Sale Price
         </Text>
-        <Input type='number' ref={priceInputRef} />
+        <Input type='number' ref={priceInputRef} bgColor={'white'} />
       </Flex>
       <Box flex={1} />
       <SimpleGrid columns={2} gap='11px' pb='26px'>

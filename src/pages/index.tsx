@@ -228,16 +228,15 @@ export default function Home() {
           <TabPanel>
             <Flex direction={'column'} gap={'20px'}>
               <Flex justify={'space-between'}>
-                <Heading fontWeight={500} size={'24px'}>
-                  Product List
-                </Heading>
-                <Icon
-                  as={AiOutlinePlus}
-                  size={'24px'}
+                <Spacer />
+                <Button
+                  size={'sm'}
                   onClick={() => {
                     router.push('/product-add');
                   }}
-                />
+                >
+                  Add an Item
+                </Button>
               </Flex>
               {productList.map((product, i) => (
                 <ProductEntity
