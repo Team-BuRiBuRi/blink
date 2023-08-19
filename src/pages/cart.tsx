@@ -78,15 +78,16 @@ function Card(props: CardProps) {
         onClick={props.onDelete}
       />
       <Flex direction={'column'} gap='4px'>
-        <HStack justify={'flex-start'} spacing='1'>
+        <HStack justify={'flex-start'} gap='10px'>
           <Image
             fit={'contain'}
             width='60px'
             height='60px'
             src={`data:image/jpg;base64,${productInfo.thumbnail}`}
             alt={productInfo.name}
+            borderRadius='10px'
           />
-          <VStack spacing={1}>
+          <VStack spacing={1} alignItems='flex-start'>
             <Text fontSize='18px' fontWeight='medium'>
               {productInfo.name}
             </Text>
@@ -113,7 +114,7 @@ function Card(props: CardProps) {
             </HStack>
           </VStack>
         </HStack>
-        <Flex>
+        <Flex direction='column' alignItems='flex-end'>
           <Spacer />
           <Flex gap='4px'>
             <Text as={'b'}>
@@ -128,6 +129,8 @@ function Card(props: CardProps) {
               {formatMoney(parseFloat(productInfo.price), 'USD')}
             </Text>
             <Text>USD</Text>
+          </Flex>
+          <Flex>
             <Text as={'b'}>
               {formatMoney(
                 parseFloat(productInfo.price) *
@@ -197,13 +200,13 @@ export default function Cart() {
 
   return (
     <Flex direction='column' minH='100vh'>
+      <Image src='/logo.svg' alt='logo' mt='15px' mb='14px' w='60px' />
       <Flex
         w='100%'
         align='center'
         justify='space-between'
         gap='10px'
-        mt='15px'
-        mb='13px'
+        mb='23px'
       >
         <Box cursor='pointer' onClick={() => router.back()}>
           <MdArrowBackIosNew size='24px' />
@@ -270,8 +273,8 @@ export default function Cart() {
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
-          <ModalBody>
-            <Text size='xl' fontWeight='600'>
+          <ModalBody pt='16px'>
+            <Text fontSize='xl' fontWeight='600'>
               Are you sure?
             </Text>
           </ModalBody>

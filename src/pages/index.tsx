@@ -1,4 +1,4 @@
-import Logo from '@/assets//logo.svg';
+import Logo from '@/assets/logo.svg';
 import { LineChart } from '@/components/linechart';
 import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetLiveExchangeRate from '@/hooks/useGetLiveExchangeRate';
@@ -140,6 +140,7 @@ export default function Home() {
                     h={'26px'}
                     fontSize={'11px'}
                     onClick={() => setIsBTC(true)}
+                    cursor='pointer'
                   >
                     <Text fontWeight={500}>BTC</Text>
                   </Center>
@@ -151,6 +152,7 @@ export default function Home() {
                     h={'26px'}
                     fontSize={'11px'}
                     onClick={() => setIsBTC(false)}
+                    cursor='pointer'
                   >
                     <Text fontWeight={500}>ARS</Text>
                   </Center>
@@ -293,9 +295,10 @@ const ProductEntity = ({ product, exchangeRate }: ProductEntityProp) => {
       onClick={() => {
         router.push(`/product/${product.id}`);
       }}
+      cursor='pointer'
     >
       <Flex gap={'12px'} align={'center'}>
-        <Box w={'60px'} h={'60px'} borderRadius={10} overflow={'hidden'}>
+        <Center w={'60px'} h={'60px'} borderRadius={10} overflow={'hidden'}>
           <Image
             width={60}
             height={60}
@@ -303,7 +306,7 @@ const ProductEntity = ({ product, exchangeRate }: ProductEntityProp) => {
             objectFit='contain'
             alt='thumbnail'
           />
-        </Box>
+        </Center>
         <Text fontSize={'18px'} fontWeight={500}>
           {product.name}
         </Text>

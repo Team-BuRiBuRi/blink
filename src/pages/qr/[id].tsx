@@ -63,24 +63,27 @@ const QRProductInfoPage = () => {
 
   return (
     <Flex direction='column' gap='20px' minHeight='100vh'>
-      <Flex
-        w='100%'
-        align='center'
-        gap='10px'
-        mt='15px'
-        justify='space-between'
-      >
-        <Box w='24px' />
-        {productInfo ? (
-          <Text fontSize='22px' fontWeight='700' flex={1} textAlign='center'>
-            {productInfo?.name}
-          </Text>
-        ) : (
-          <Skeleton w={247} h={33} borderRadius={20}></Skeleton>
-        )}
-        <Box cursor='pointer' onClick={onMoveCartClick}>
-          <MdOutlineShoppingCart size='24px' />
-        </Box>
+      <Flex direction='column' gap='13px'>
+        <Flex justifyContent='space-between' mt='15px'>
+          <Image
+            src='/logo.svg'
+            alt='logo'
+            onClick={() => router.push('/')}
+            w='60px'
+          />
+          <Box cursor='pointer' onClick={onMoveCartClick}>
+            <MdOutlineShoppingCart size='24px' />
+          </Box>
+        </Flex>
+        <Flex w='100%' justify='center' gap='10px'>
+          {productInfo ? (
+            <Text fontSize='22px' fontWeight='700' flex={1} textAlign='center'>
+              {productInfo?.name}
+            </Text>
+          ) : (
+            <Skeleton w={247} h={33} borderRadius={20}></Skeleton>
+          )}
+        </Flex>
       </Flex>
       <Center>
         {productInfo ? (

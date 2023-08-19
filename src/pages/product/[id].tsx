@@ -3,8 +3,8 @@ import WhiteBox from '@/components/WhiteBox';
 import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetProduct from '@/hooks/useGetProduct';
 import useGetShop from '@/hooks/useGetShop';
-import { anyToFloat, formatMoney } from '@/libs/utils';
 import usePatchProduct from '@/hooks/usePatchProduct';
+import { anyToFloat, formatMoney } from '@/libs/utils';
 import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -49,7 +49,19 @@ const ProductInfoPage = () => {
 
   return (
     <Flex direction='column' gap='20px' pb='20px'>
-      <Flex w='100%' align='center' gap='10px' mt='15px'>
+      <Flex
+        w='100%'
+        align='center'
+        justify='space-between'
+        gap='10px'
+        mt='15px'
+      >
+        <Image src='/logo.svg' alt='logo' onClick={() => router.push('/')} />
+        <Box cursor='pointer'>
+          <BsFillTrashFill size='24px' />
+        </Box>
+      </Flex>
+      <Flex w='100%' align='center' gap='10px'>
         <Box
           cursor='pointer'
           onClick={() => {
@@ -61,9 +73,7 @@ const ProductInfoPage = () => {
         <Text fontSize='22px' fontWeight='700' flex={1}>
           {productInfo.name}
         </Text>
-        <Box cursor='pointer'>
-          <BsFillTrashFill size='24px' />
-        </Box>
+        <Box cursor='pointer' w='24px' />
       </Flex>
       <Flex gap='14px' direction='column'>
         <Text fontSize='20px' fontWeight={500}>
