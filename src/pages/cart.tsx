@@ -199,7 +199,6 @@ export default function Cart() {
     onClose();
   };
 
-
   return (
     <Flex direction='column' minH='100vh'>
       <Image src='/logo.svg' alt='logo' mt='15px' mb='14px' w='60px' />
@@ -219,7 +218,7 @@ export default function Cart() {
         <Box w='24px' h='24px' />
       </Flex>
       <Flex direction='column' gap='14px'>
-        {cartItems !== undefined ?
+        {cartItems !== undefined ? (
           cartItems.map((c) => (
             <Card
               key={c.id}
@@ -246,7 +245,10 @@ export default function Cart() {
                 }
               }
             />
-          )): <Skeleton w={300} h={300}></Skeleton>}
+          ))
+        ) : (
+          <Skeleton w={300} h={300}></Skeleton>
+        )}
       </Flex>
       <Box flex={1} />
       <Flex gap='14px' pb='26px' direction='column'>

@@ -16,7 +16,7 @@ export default async function handler(
           errors.push(`Product ${element.productId} not found`);
           continue;
         }
-        const quantity = Number(element.quantity);
+        const quantity = element.quantity;
         if (quantity <= 0) {
           errors.push(`Invalid quantity ${element.quantity}`);
           continue;
@@ -24,10 +24,12 @@ export default async function handler(
 
         const shop =
           await sql`SELECT * FROM shop WHERE id=${product.rows[0].shopid}`;
-        const fee = Number(shop.rows[0].fee);
-        const price = Number(product.rows[0].price);
-        const totalSales = Number(product.rows[0].totalsales);
-        const totalSalesQuantity = Number(product.rows[0].totalsalesquantity);
+        const fee = parseFloat(shop.rows[0].fee);
+        const price = parseFloat(product.rows[0].price);
+        const totalSales = parseFloat(product.rows[0].totalsales);
+        const totalSalesQuantity = parseFloat(
+          product.rows[0].totalsalesquantity
+        );
 
         await sql`UPDATE product SET totalSales = ${
           totalSales + price * quantity * fee

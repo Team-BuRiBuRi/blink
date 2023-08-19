@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { sql } from '@vercel/postgres';
+import { formatMoney } from '@/libs/utils';
 
 export default async function handler(
   request: NextApiRequest,
@@ -37,11 +38,20 @@ export default async function handler(
         const bodyInput = await fetch(
           `http://3.143.203.132:3000?id=${product.id}&name=${
             product.name
-          }&usd=${Number(product.price) * Number(body.fee)}&ars=${
-            Number(product.price) * Number(body.fee) * Number(appliedARS)
-          }&brc=${
-            Number(product.price) * Number(body.fee) * Number(appliedBTC)
-          }`,
+          }&usd=${formatMoney(
+            parseFloat(product.price) * parseFloat(body.fee),
+            'USD'
+          )}&ars=${formatMoney(
+            parseFloat(product.price) *
+              parseFloat(body.fee) *
+              parseFloat(appliedARS),
+            'ARS'
+          )}&btc=${formatMoney(
+            parseFloat(product.price) *
+              parseFloat(body.fee) *
+              parseFloat(appliedBTC),
+            'BTC'
+          )}`,
           {
             method: 'GET',
             headers: {
@@ -65,11 +75,6 @@ export default async function handler(
         )
           .then((res) => res.json())
           .catch((err) => console.log(err));
-
-        console.log(parseFloat(product.price));
-
-        console.log(parseFloat(body.fee));
-        console.log(parseFloat(appliedBTC));
       }
 
       return response.status(200).json({ success: true });

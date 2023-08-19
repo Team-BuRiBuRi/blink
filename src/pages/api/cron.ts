@@ -1,3 +1,4 @@
+import { formatMoney } from '@/libs/utils';
 import { sql } from '@vercel/postgres';
 import { NextApiResponse, NextApiRequest } from 'next';
 
@@ -56,6 +57,33 @@ export default async function handler(
           await sql`SELECT * FROM product WHERE shopId = ${shop.id};`
         ).rows;
         for (const product of products) {
+          const bodyInput = await fetch(
+            `http://3.143.203.132:3000?id=${product.id}&name=${
+              product.name
+            }&usd=${formatMoney(
+              parseFloat(product.price) * parseFloat(shop.fee),
+              'USD'
+            )}&ars=${formatMoney(
+              parseFloat(product.price) *
+                parseFloat(shop.fee) *
+                parseFloat(currentARS),
+              'ARS'
+            )}&btc=${formatMoney(
+              parseFloat(product.price) *
+                parseFloat(shop.fee) *
+                parseFloat(currentBCH),
+              'BTC'
+            )}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+            .then((res) => res.json())
+            .catch((err) => console.log(err));
+
           await fetch(
             'https://stage00.common.solumesl.com/common/api/v2/common/labels/image?company=JC04&store=1111',
             {
@@ -64,29 +92,11 @@ export default async function handler(
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + accessToken,
               },
-              body: JSON.stringify(
-                await fetch(
-                  `http://3.143.203.132:3000?id=${product.id}&name=${
-                    product.name
-                  }&usd=${Number(product.price) * Number(shop.fee)}&ars=${
-                    Number(product.price) *
-                    Number(shop.fee) *
-                    Number(currentARS)
-                  }&brc=${
-                    Number(product.price) *
-                    Number(shop.fee) *
-                    Number(currentBCH)
-                  }`,
-                  {
-                    method: 'GET',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                  }
-                )
-              ),
+              body: JSON.stringify(bodyInput),
             }
-          );
+          )
+            .then((res) => res.json())
+            .catch((err) => console.log(err));
         }
       }
     }

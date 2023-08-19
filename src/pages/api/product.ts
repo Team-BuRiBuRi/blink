@@ -1,3 +1,4 @@
+import { formatMoney } from '@/libs/utils';
 import { sql } from '@vercel/postgres';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -48,12 +49,39 @@ export default async function handler(
       const accessToken = (await sql`SELECT accesstoken FROM Auth;`).rows[0]
         .accesstoken;
 
-      const shop = (await sql`SELECT * FROM shop WHERE id = ${product.shopId};`)
+      const shop = (await sql`SELECT * FROM shop WHERE id = ${product.shopid};`)
         .rows[0];
 
       const { ars: appliedARS, btc: appliedBTC } = (
         await sql`SELECT * FROM appliedexchangerate`
       ).rows[0];
+
+      const bodyInput = await fetch(
+        `http://3.143.203.132:3000?id=${product.id}&name=${
+          product.name
+        }&usd=${formatMoney(
+          parseFloat(body.price) * parseFloat(shop.fee),
+          'USD'
+        )}&ars=${formatMoney(
+          parseFloat(body.price) *
+            parseFloat(shop.fee) *
+            parseFloat(appliedARS),
+          'ARS'
+        )}&btc=${formatMoney(
+          parseFloat(body.price) *
+            parseFloat(shop.fee) *
+            parseFloat(appliedBTC),
+          'BTC'
+        )}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+        .then((res) => res.json())
+        .catch((err) => console.log(err));
 
       await fetch(
         'https://stage00.common.solumesl.com/common/api/v2/common/labels/image?company=JC04&store=1111',
@@ -63,28 +91,15 @@ export default async function handler(
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + accessToken,
           },
-          body: JSON.stringify(
-            await fetch(
-              `http://3.143.203.132:3000?id=${product.id}&name=${
-                product.name
-              }&usd=${Number(body.price) * Number(shop.fee)}&ars=${
-                Number(body.price) * Number(shop.fee) * Number(appliedARS)
-              }&brc=${
-                Number(body.price) * Number(shop.fee) * Number(appliedBTC)
-              }`,
-              {
-                method: 'GET',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              }
-            )
-          ),
+          body: JSON.stringify(bodyInput),
         }
-      );
+      )
+        .then((res) => res.json())
+        .catch((err) => console.log(err));
 
       return response.status(200).json({ success: true });
     } catch (error) {
+      console.log(error);
       return response.status(500).json({ error });
     }
   } else if (request.method === 'GET') {
