@@ -2,7 +2,6 @@ import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate'
 import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetProduct from '@/hooks/useGetProduct';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
-import { mockGetProduct } from '@/libs';
 import { LS_CART_ITEMS } from '@/libs/constants';
 import { CartItemInStorage } from '@/types/misc';
 import {
@@ -138,21 +137,25 @@ export default function Cart() {
 
   const [totalAmount, setTotalAmount] = useState(0);
 
+  const { getProduct } = useGetProduct();
+
   useEffect(() => {
     Promise.all(
-      (cartItems ?? []).map(({ id, quantity }) => ({
+      (cartItems ?? []).map(async ({ id, quantity }) => ({
         quantity,
-        product: mockGetProduct(id),
+        product: await getProduct({ id }),
       }))
     ).then((allItemsPrice) => {
       setTotalAmount(
         allItemsPrice.reduce(
-          (acc, cur) => acc + parseFloat(cur.product.price) * cur.quantity,
+          (acc, cur) =>
+            acc +
+            parseFloat(cur.product ? cur.product.price : '0') * cur.quantity,
           0
         )
       );
     });
-  }, [cartItems]);
+  }, [cartItems, getProduct]);
 
   useEffect(() => {
     getExchangeRate().then((e) => e && setExchangeInfo(e));

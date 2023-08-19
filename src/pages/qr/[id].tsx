@@ -1,6 +1,6 @@
 import useGetExchangeRate from '@/hooks/useGetExchangeRate';
+import useGetProduct from '@/hooks/useGetProduct';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
-import { mockGetProduct } from '@/libs';
 import { LS_CART_ITEMS } from '@/libs/constants';
 import { CartItemInStorage } from '@/types/misc';
 import {
@@ -24,6 +24,8 @@ const QRProductInfoPage = () => {
     []
   );
   const [quantity, setQuantity] = useState(0);
+  const [productInfo, setProductInfo] = useState<Product | null>(null);
+  const { getProduct } = useGetProduct();
 
   const { getExchangeRate } = useGetExchangeRate();
   const [exchangeInfo, setExchangeInfo] =
@@ -35,10 +37,14 @@ const QRProductInfoPage = () => {
     getExchangeRate().then((e) => e && setExchangeInfo(e));
   }, [getExchangeRate]);
 
+  useEffect(() => {
+    getProduct({ id: parseFloat(productId as string) }).then((p) => {
+      if (p) setProductInfo(p);
+    });
+  }, [productId, getProduct]);
+
   if (!productId || typeof productId !== 'string')
     return <div>잘못된페이지</div>;
-
-  const productInfo = mockGetProduct(parseFloat(productId));
 
   const onMoveCartClick = () => {
     router.push('/cart');
@@ -57,7 +63,7 @@ const QRProductInfoPage = () => {
     <Flex direction='column' gap='20px' minHeight='100vh'>
       <Flex w='100%' align='center' gap='10px' mt='15px'>
         <Text fontSize='22px' fontWeight='700' flex={1} textAlign='center'>
-          {productInfo.name}
+          {productInfo?.name}
         </Text>
         <Box cursor='pointer' onClick={onMoveCartClick}>
           <MdOutlineShoppingCart size='24px' />
@@ -65,11 +71,11 @@ const QRProductInfoPage = () => {
       </Flex>
       <Center>
         <Image
-          src={productInfo.thumbnail}
+          src={productInfo?.thumbnail}
           w='273px'
           h='273px'
           boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
-          alt={productInfo.name}
+          alt={productInfo?.name}
           borderRadius='20px'
         />
       </Center>
@@ -104,7 +110,7 @@ const QRProductInfoPage = () => {
             ARS
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo.price) *
+            {parseFloat(productInfo ? productInfo.price : '0') *
               parseFloat(exchangeInfo ? exchangeInfo.ars : '0')}
           </Text>
         </Flex>
@@ -113,7 +119,7 @@ const QRProductInfoPage = () => {
             USD
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo.price)}
+            {parseFloat(productInfo ? productInfo.price : '0')}
           </Text>
         </Flex>
         <Flex direction='column' gap='16px'>
@@ -121,7 +127,7 @@ const QRProductInfoPage = () => {
             BTC
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo.price) *
+            {parseFloat(productInfo ? productInfo.price : '0') *
               parseFloat(exchangeInfo ? exchangeInfo.btc : '0')}
           </Text>
         </Flex>
