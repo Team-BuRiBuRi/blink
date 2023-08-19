@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-import { Image } from '@chakra-ui/react';
+// import { Image } from '@chakra-ui/react';
+
+import QRCode from '../libs/qr';
 
 export default function Test() {
   const canvasRef = useRef(null);
@@ -106,6 +108,39 @@ export default function Test() {
 
     ctx.fillText(`SOLUM`, CANVAS_WIDTH - 45, 14);
 
+    const QRSVG = new QRCode({
+      content: `${qrCode}`,
+      padding: 4,
+      width: 86,
+      height: 86,
+      color: '#000000',
+      background: '#ffffff',
+      ecl: 'L',
+      join: true,
+    }).svg();
+
+    console.log(QRSVG);
+
+    const img = new Image();
+    // const canvas = document.getElementById('myCanvas');
+    // const ctx = canvas.getContext('2d');
+
+    // Convert the SVG data to a data URL
+    const svgBlob = new Blob([QRSVG], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = function () {
+      // Draw the loaded image onto the canvas
+      ctx.drawImage(img, 14, 42, 86, 86);
+
+      // Clean up the blob URL
+      URL.revokeObjectURL(url);
+    };
+
+    img.src = url;
+
     // ctx.font = `bold ${FONT_SIZE_XXL}px Impact`;
     // const currencyText = ctx.measureText(currency);
     // ctx.fillText(
@@ -146,7 +181,7 @@ export default function Test() {
   return (
     <div>
       <h1>Test</h1>
-      <Image src={'els.png'} alt='test' />
+      {/* <Image src={'els.png'} alt='test' /> */}
       <canvas ref={canvasRef} id='canvas' width='250' height='122'></canvas>
     </div>
   );
