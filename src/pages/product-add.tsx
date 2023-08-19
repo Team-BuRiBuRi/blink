@@ -93,7 +93,14 @@ const AddProductPage = () => {
       </Flex>
       <Box flex={1} />
       <SimpleGrid columns={2} gap='11px' pb='26px'>
-        <Button colorScheme='gray'>Cancel</Button>
+        <Button
+          colorScheme='gray'
+          onClick={() => {
+            router.push('/');
+          }}
+        >
+          Cancel
+        </Button>
         <Button colorScheme='red' onClick={onClickConfirm}>
           Complete
         </Button>
