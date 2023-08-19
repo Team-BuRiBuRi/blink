@@ -55,7 +55,8 @@ export default async function handler(
       if (id === undefined) {
         const shopId = request.query.shopId as string;
         if (shopId === undefined) {
-          const products = (await sql`SELECT * FROM product;`).rows;
+          const products = (await sql`SELECT * FROM product ORDER BY id DESC;`)
+            .rows;
 
           return response.status(200).json(products);
         } else {
@@ -66,14 +67,15 @@ export default async function handler(
           }
 
           const products = (
-            await sql`SELECT * FROM product WHERE shopId = ${shopId};`
+            await sql`SELECT * FROM product WHERE shopId = ${shopId} ORDER BY id DESC;`
           ).rows;
 
           return response.status(200).json(products);
         }
       } else {
-        const product = (await sql`SELECT * FROM product WHERE id = ${id};`)
-          .rows[0];
+        const product = (
+          await sql`SELECT * FROM product WHERE id = ${id} ORDER BY id DESC;`
+        ).rows[0];
         if (!product) {
           return response.status(404).json({ error: 'Product not found' });
         }
