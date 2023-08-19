@@ -23,7 +23,7 @@ const QRProductInfoPage = () => {
     LS_CART_ITEMS,
     []
   );
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [productInfo, setProductInfo] = useState<Product | null>(null);
   const { getProduct } = useGetProduct();
 
@@ -118,7 +118,8 @@ const QRProductInfoPage = () => {
           </Text>
           <Text fontSize='30px' fontWeight='700'>
             {parseFloat(productInfo ? productInfo.price : '0') *
-              parseFloat(exchangeInfo ? exchangeInfo.ars : '0')}
+              parseFloat(exchangeInfo ? exchangeInfo.ars : '0') *
+              quantity}
           </Text>
         </Flex>
         <Flex direction='column' gap='16px'>
@@ -126,7 +127,7 @@ const QRProductInfoPage = () => {
             USD
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo ? productInfo.price : '0')}
+            {parseFloat(productInfo ? productInfo.price : '0') * quantity}
           </Text>
         </Flex>
         <Flex direction='column' gap='16px'>
@@ -135,7 +136,8 @@ const QRProductInfoPage = () => {
           </Text>
           <Text fontSize='30px' fontWeight='700'>
             {parseFloat(productInfo ? productInfo.price : '0') *
-              parseFloat(exchangeInfo ? exchangeInfo.btc : '0')}
+              parseFloat(exchangeInfo ? exchangeInfo.btc : '0') *
+              quantity}
           </Text>
         </Flex>
       </Flex>
