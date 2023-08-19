@@ -35,10 +35,16 @@ const ImageInput = forwardRef<HTMLInputElement, ImageInputProps>(
           hidden
           accept='image/png, image/jpeg, image/jpg'
           onChange={onInput}
-          objectFit='contain'
+          objectFit='cover'
         />
         {props.thumbnailBlob ? (
-          <Image src={props.thumbnailBlob} w='100px' h='100px' alt='input' />
+          <Image
+            src={props.thumbnailBlob}
+            w='100px'
+            h='100px'
+            alt='input'
+            objectFit='cover'
+          />
         ) : (
           <HiPhotograph size='48px' />
         )}
