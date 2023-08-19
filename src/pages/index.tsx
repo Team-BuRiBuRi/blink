@@ -1,3 +1,4 @@
+import Logo from '@/assets//logo.svg';
 import { LineChart } from '@/components/linechart';
 import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetLiveExchangeRate from '@/hooks/useGetLiveExchangeRate';
@@ -21,32 +22,25 @@ import {
   Tabs,
   Text,
 } from '@chakra-ui/react';
+import { format } from 'd3-format';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { AiOutlineArrowRight, AiOutlinePlus } from 'react-icons/ai';
+import {
+  AiOutlineArrowRight,
+  AiOutlinePlus,
+  AiOutlineSearch,
+} from 'react-icons/ai';
 const PRIMARY_COLOR = '#E2674E';
-const exchangeRate: AppliedExchangeRate = {
-  ars: '100',
-  btc: '0.0001',
-};
-const dummy: Product = {
-  id: 1,
-  name: 'Product Name',
-  thumbnail: '',
-  shopId: 1,
-  price: '200',
-  buyPrice: '100',
-  buyQuantity: 20,
-  totalSales: '2000',
-  totalSalesQuantity: 10,
-};
 
 export default function Home() {
+  const router = useRouter();
   const [shopId, setShopId] = useState(1);
   const [isBTC, setIsBTC] = useState(false);
   const [exchangeRate, setExchangeRate] =
     useState<GetAppliedExchangeRateResponse>({
-      ars: '100',
-      btc: '0.0001',
+      ars: '500',
+      btc: '10000000',
     });
   const [fee, setFee] = useState(1);
   const [fromCurrency, setFromCurrency] = useState({
@@ -58,6 +52,7 @@ export default function Home() {
     price: '100',
   });
   const [liveRate, setLiveRate] = useState<Price[]>([]);
+  const [productList, setProductList] = useState<Product[]>([]);
 
   const getShop = useGetShop();
   const patchShop = usePatchShop();
@@ -80,6 +75,9 @@ export default function Home() {
       if (xeResponse) {
         setLiveRate(xeResponse.to[isBTC ? 'BTC' : 'ARS']);
       }
+      const products = await getProductList.getProducts({ shopId });
+      if (products) setProductList(products);
+      console.log(products);
     };
     fetchShop();
   }, [isBTC]);
@@ -101,6 +99,10 @@ export default function Home() {
 
   return (
     <Flex gap={'20px'} flexDir={'column'}>
+      <Flex justifyContent={'space-between'} align={'center'} mt='24px'>
+        <Image src={Logo} alt='logo' />
+        <Icon as={AiOutlineSearch} boxSize={'24px'} />
+      </Flex>
       <Flex justify={'start'} align={'center'} gap={11}>
         <Avatar
           w={'24px'}
@@ -112,7 +114,7 @@ export default function Home() {
           {"Maria's Dashboard"}
         </Heading>
       </Flex>
-      <Tabs w='full' colorScheme='red'>
+      <Tabs w='full' colorScheme='orange'>
         <TabList>
           <Tab w='full'>Exchange Rate</Tab>
           <Tab w='full'>Product List</Tab>
@@ -138,7 +140,7 @@ export default function Home() {
                     borderRadius={20}
                     w={'46px'}
                     h={'26px'}
-                    fontSize={'14px'}
+                    fontSize={'11px'}
                     onClick={() => setIsBTC(true)}
                   >
                     <Text fontWeight={500}>BTC</Text>
@@ -149,7 +151,7 @@ export default function Home() {
                     borderRadius={20}
                     w={'46px'}
                     h={'26px'}
-                    fontSize={'14px'}
+                    fontSize={'11px'}
                     onClick={() => setIsBTC(false)}
                   >
                     <Text fontWeight={500}>ARS</Text>
@@ -167,9 +169,10 @@ export default function Home() {
                   <LineChart
                     width={375}
                     height={200}
-                    margin={{ top: 10, right: 10, bottom: 30, left: 40 }}
-                    data={liveRate}
+                    margin={{ top: 10, right: 10, bottom: 30, left: 50 }}
                     fee={fee}
+                    data={liveRate}
+                    currency={isBTC ? 'BTC' : 'ARS'}
                   />
                 )}
               </Flex>
@@ -178,7 +181,7 @@ export default function Home() {
                 Set User Price
               </Text>
               <Flex gap={2} align='center' dir='row'>
-                <Text fontSize={'14px'} fontWeight={600} mr='5px'>
+                <Text fontSize={'11px'} fontWeight={600} mr='5px'>
                   USD
                 </Text>
                 <Input
@@ -192,7 +195,7 @@ export default function Home() {
                   }
                 />
                 <Icon as={AiOutlineArrowRight} size={'24px'} />
-                <Text fontSize={'14px'} fontWeight={600} mr='5px'>
+                <Text fontSize={'11px'} fontWeight={600} mr='5px'>
                   {isBTC ? 'BTC' : 'ARS'}
                 </Text>
                 <Input
@@ -228,9 +231,15 @@ export default function Home() {
                 <Heading fontWeight={500} size={'24px'}>
                   Product List
                 </Heading>
-                <Icon as={AiOutlinePlus} size={'24px'} />
+                <Icon
+                  as={AiOutlinePlus}
+                  size={'24px'}
+                  onClick={() => {
+                    router.push('/product-add');
+                  }}
+                />
               </Flex>
-              {[dummy, dummy, dummy].map((product, i) => (
+              {productList.map((product, i) => (
                 <ProductEntity
                   key={`${i}`}
                   product={product}
@@ -251,6 +260,7 @@ interface ProductEntityProp {
 }
 
 const ProductEntity = ({ product, exchangeRate }: ProductEntityProp) => {
+  const router = useRouter();
   const usdPrice = product.price;
   const arsPrice = parseFloat(usdPrice) * parseFloat(exchangeRate.ars);
   const btcPrice = parseFloat(usdPrice) * parseFloat(exchangeRate.btc);
@@ -259,47 +269,57 @@ const ProductEntity = ({ product, exchangeRate }: ProductEntityProp) => {
     <Flex
       px={5}
       py={3}
-      gap={1}
+      gap={2}
       justify='center'
       bg='white'
       borderRadius='20px'
       boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
       flexDir={'column'}
+      onClick={() => {
+        router.push(`/product/${product.id}`);
+      }}
     >
-      <Flex gap={'10px'} align={'center'}>
-        <Box bgColor='blue.500' w={'60px'} h={'60px'} />
+      <Flex gap={'12px'} align={'center'}>
+        <Box w={'60px'} h={'60px'} borderRadius={10} overflow={'hidden'}>
+          <Image
+            width={60}
+            height={60}
+            src={`data:image/jpg;base64,${product.thumbnail}`}
+            alt='thumbnail'
+          />
+        </Box>
         <Text fontSize={'18px'} fontWeight={500}>
           {product.name}
         </Text>
       </Flex>
       <Flex flexDir={'row'}>
-        <Text fontSize={'14px'} fontWeight={600} mr='5px'>
+        <Text fontSize={'11px'} fontWeight={600} mr='5px'>
           {usdPrice}
         </Text>
         <Text
-          fontSize={'14px'}
+          fontSize={'11px'}
           fontWeight={500}
           color={'blackAlpha.600'}
           mr='9px'
         >
           USD
         </Text>
-        <Text fontSize={'14px'} fontWeight={600} mr='5px'>
-          {arsPrice}
+        <Text fontSize={'11px'} fontWeight={600} mr='5px'>
+          {format('.4s')(arsPrice)}
         </Text>
         <Text
-          fontSize={'14px'}
+          fontSize={'11px'}
           fontWeight={500}
           color={'blackAlpha.600'}
           mr='9px'
         >
           ARS
         </Text>
-        <Text fontSize={'14px'} fontWeight={600} mr={'5px'}>
-          {btcPrice}
+        <Text fontSize={'11px'} fontWeight={600} mr={'5px'}>
+          {format('.5e')(btcPrice)}
         </Text>
         <Text
-          fontSize={'14px'}
+          fontSize={'11px'}
           fontWeight={500}
           color={'blackAlpha.600'}
           mr={'9px'}

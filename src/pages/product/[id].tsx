@@ -10,6 +10,7 @@ import { BsFillTrashFill } from 'react-icons/bs';
 import { MdArrowBackIosNew } from 'react-icons/md';
 
 const ProductInfoPage = () => {
+  const router = useRouter();
   const productId = useRouter().query.id;
   const { getProduct } = useGetProduct();
   const [productInfo, setProduct] = useState<Product | undefined>(undefined);
@@ -34,7 +35,12 @@ const ProductInfoPage = () => {
   return (
     <Flex direction='column' gap='20px'>
       <Flex w='100%' align='center' gap='10px' mt='15px'>
-        <Box cursor='pointer'>
+        <Box
+          cursor='pointer'
+          onClick={() => {
+            router.push('/');
+          }}
+        >
           <MdArrowBackIosNew size='24px' />
         </Box>
         <Text fontSize='22px' fontWeight='700' flex={1}>

@@ -6,6 +6,7 @@ import { Group } from '@visx/group';
 import { ScaleSVG } from '@visx/responsive';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { AreaClosed, LinePath } from '@visx/shape';
+import { Text } from '@visx/text';
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { useState } from 'react';
@@ -21,12 +22,13 @@ interface LineChartProps {
   };
   fee: number;
   data: Price[];
+  currency: Currencies;
 }
 
 const getTime = (d: Price) => new Date(d.timestamp);
 
 export const LineChart = (props: LineChartProps) => {
-  const { width, height, margin, fee, data } = props;
+  const { width, height, margin, fee, data, currency } = props;
   const [isFetching, setIsFetching] = useState(false);
 
   const formatTime = timeFormat('%b %d');
@@ -110,6 +112,21 @@ export const LineChart = (props: LineChartProps) => {
               r={10}
               opacity={0.5}
             />
+            <Text
+              x={dateScale(getTime(data[data.length - 1]))}
+              y={priceScale(data[data.length - 1].mid * fee)}
+              dx={-20}
+              dy={5}
+              fontSize={18}
+              fontWeight={600}
+              textAnchor='end'
+            >
+              {format(currency == 'BTC' ? '.5e' : 'd')(
+                data[data.length - 1].mid * fee
+              ) +
+                ' ' +
+                currency}
+            </Text>
             <line
               x1={dateScale(getTime(data[data.length - 1]))}
               x2={dateScale(getTime(data[data.length - 1]))}
@@ -136,7 +153,8 @@ export const LineChart = (props: LineChartProps) => {
             top={margin.top}
             left={margin.left}
             scale={priceScale}
-            tickFormat={(d) => format('$,.2d')(d)}
+            tickFormat={(d) => format(currency == 'BTC' ? '.1e' : 'd')(d)}
+            numTicks={6}
             stroke='gray'
             hideAxisLine
             tickStroke='gray'
