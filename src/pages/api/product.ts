@@ -23,9 +23,12 @@ export default async function handler(
         return response.status(400).json({ error: 'Invalid body' });
       }
 
-      await sql`INSERT INTO product (shopId, price, buyPrice, buyQuantity, totalSales, totalSalesQuantity, name, thumbnail) VALUES (${body.shopId}, ${body.price}, ${body.buyPrice}, ${body.buyQuantity}, 0, 0, ${body.name}, ${body.thumbnail});`;
-      return response.status(200).json({ success: true });
+      const pk = Date.now().toString().slice(4, 17);
+      await sql`INSERT INTO product (id, shopId, price, buyPrice, buyQuantity, totalSales, totalSalesQuantity, name, thumbnail) VALUES (${pk}, ${body.shopId}, ${body.price}, ${body.buyPrice}, ${body.buyQuantity}, 0, 0, ${body.name}, ${body.thumbnail});`;
+
+      return response.status(200).json({ success: true, pk });
     } catch (error) {
+      console.log(error);
       return response.status(500).json({ error });
     }
   } else if (request.method === 'PATCH') {
@@ -41,7 +44,7 @@ export default async function handler(
       }
 
       await sql`UPDATE product SET price = ${body.price} WHERE id = ${body.id};`;
-      // fee 먹인 채로 상품 els 업데이트
+      //  fee 먹인 채로 상품 els 업데이트
       return response.status(200).json({ success: true });
     } catch (error) {
       return response.status(500).json({ error });
