@@ -24,7 +24,7 @@ const AddProductPage = () => {
     const thumbnailBlob = await objectUrlToBlob(thumbnail);
     const thumbnailBase64 = await blobToBase64(thumbnailBlob);
 
-    const patchProductResponse = await postProduct({
+    const postProductResponse = await postProduct({
       shopId: 1,
       price: priceInputRef.current?.value ?? '',
       buyPrice: buyPriceInputRef.current?.value ?? '',
@@ -32,8 +32,8 @@ const AddProductPage = () => {
       name: nameInputRef.current?.value ?? '',
       thumbnail: thumbnailBase64.split(',')[1],
     });
-    if (patchProductResponse === true) {
-      router.push(`/`); //TODO : 이 아이템의 PK를 받아 그 페이지로 보낸다. `/product/${productId}`
+    if (postProductResponse !== -1) {
+      router.replace(`/product/${postProductResponse}`);
     }
   };
   return (

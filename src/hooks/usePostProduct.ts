@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function usePostProduct() {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,17 +25,20 @@ export default function usePostProduct() {
         if (response.ok) {
           setIsSuccessful(true);
           setIsError(false);
-          return true;
+          const json = await response.json();
+          const pk = parseFloat(json.pk);
+          if (typeof pk === 'number') return pk;
+          return -1;
         } else {
           setIsSuccessful(false);
           setIsError(true);
-          return false;
+          return -1;
         }
       } catch (err) {
         setIsSuccessful(false);
         setIsLoading(false);
         setIsError(true);
-        return false;
+        return -1;
       }
     },
     []

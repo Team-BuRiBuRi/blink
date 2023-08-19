@@ -82,6 +82,7 @@ const ProductInfoPage = () => {
           h='100px'
           borderRadius='20px'
           bg='white'
+          objectFit='contain'
           boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
         />
       </Flex>
