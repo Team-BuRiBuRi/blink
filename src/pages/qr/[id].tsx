@@ -1,5 +1,6 @@
+import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
-import { mockGetExchangeRate, mockGetProduct } from '@/libs';
+import { mockGetProduct } from '@/libs';
 import { LS_CART_ITEMS } from '@/libs/constants';
 import { CartItemInStorage } from '@/types/misc';
 import {
@@ -13,7 +14,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdOutlineShoppingCart } from 'react-icons/md';
 
 const QRProductInfoPage = () => {
@@ -23,12 +24,21 @@ const QRProductInfoPage = () => {
     []
   );
   const [quantity, setQuantity] = useState(0);
+
+  const { getExchangeRate } = useGetExchangeRate();
+  const [exchangeInfo, setExchangeInfo] =
+    useState<GetAppliedExchangeRateResponse | null>(null);
+
   const productId = router.query.id;
+
+  useEffect(() => {
+    getExchangeRate().then((e) => e && setExchangeInfo(e));
+  }, [getExchangeRate]);
+
   if (!productId || typeof productId !== 'string')
     return <div>잘못된페이지</div>;
 
   const productInfo = mockGetProduct(parseFloat(productId));
-  const exchangeInfo = mockGetExchangeRate();
 
   const onMoveCartClick = () => {
     router.push('/cart');
@@ -94,7 +104,8 @@ const QRProductInfoPage = () => {
             ARS
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo.price) * parseFloat(exchangeInfo.ars)}
+            {parseFloat(productInfo.price) *
+              parseFloat(exchangeInfo ? exchangeInfo.ars : '0')}
           </Text>
         </Flex>
         <Flex direction='column' gap='16px'>
@@ -110,7 +121,8 @@ const QRProductInfoPage = () => {
             BTC
           </Text>
           <Text fontSize='30px' fontWeight='700'>
-            {parseFloat(productInfo.price) * parseFloat(exchangeInfo.btc)}
+            {parseFloat(productInfo.price) *
+              parseFloat(exchangeInfo ? exchangeInfo.btc : '0')}
           </Text>
         </Flex>
       </Flex>

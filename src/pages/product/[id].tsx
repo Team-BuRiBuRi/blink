@@ -1,7 +1,7 @@
 import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate';
 import WhiteBox from '@/components/WhiteBox';
+import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetProduct from '@/hooks/useGetProduct';
-import { mockGetExchangeRate } from '@/libs';
 import { anyToFloat } from '@/libs/utils';
 import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -22,15 +22,21 @@ const ProductInfoPage = () => {
     [productId, getProduct]
   );
 
+  const { getExchangeRate } = useGetExchangeRate();
+  const [exchangeInfo, setExchangeInfo] =
+    useState<GetAppliedExchangeRateResponse | null>(null);
+
   useEffect(() => {
     getCardProduct()?.then((p) => p && setProduct(p));
   }, [getCardProduct]);
 
+  useEffect(() => {
+    getExchangeRate().then((e) => e && setExchangeInfo(e));
+  }, [getExchangeRate]);
+
   if (!productId || typeof productId !== 'string')
     return <div>잘못된페이지</div>;
   if (!productInfo) return <></>;
-
-  const exchangeInfo = mockGetExchangeRate();
 
   return (
     <Flex direction='column' gap='20px'>
@@ -80,7 +86,8 @@ const ProductInfoPage = () => {
               left: 'ARS',
               right: (
                 <Text fontSize='16px' fontWeight='600' mr='14px'>
-                  {parseFloat(productInfo.price) * parseFloat(exchangeInfo.ars)}
+                  {parseFloat(productInfo.price) *
+                    parseFloat(exchangeInfo ? exchangeInfo.ars : '0')}
                 </Text>
               ),
             },
@@ -101,7 +108,8 @@ const ProductInfoPage = () => {
               left: 'BTC',
               right: (
                 <Text fontSize='16px' fontWeight='600' mr='14px'>
-                  {parseFloat(productInfo.price) * parseFloat(exchangeInfo.btc)}
+                  {parseFloat(productInfo.price) *
+                    parseFloat(exchangeInfo ? exchangeInfo.btc : '0')}
                 </Text>
               ),
             },
@@ -127,7 +135,12 @@ const ProductInfoPage = () => {
               right: (
                 <DropdownWithExchangeRate
                   dollar={parseFloat(productInfo.buyPrice)}
-                  rate={exchangeInfo}
+                  rate={
+                    exchangeInfo || {
+                      ars: '0',
+                      btc: '0',
+                    }
+                  }
                 />
               ),
             },
@@ -136,7 +149,12 @@ const ProductInfoPage = () => {
               right: (
                 <DropdownWithExchangeRate
                   dollar={parseFloat(productInfo.totalSales)}
-                  rate={exchangeInfo}
+                  rate={
+                    exchangeInfo || {
+                      ars: '0',
+                      btc: '0',
+                    }
+                  }
                 />
               ),
             },
@@ -149,7 +167,12 @@ const ProductInfoPage = () => {
                     parseFloat(productInfo.buyPrice) *
                       anyToFloat(productInfo.buyQuantity)
                   }
-                  rate={exchangeInfo}
+                  rate={
+                    exchangeInfo || {
+                      ars: '0',
+                      btc: '0',
+                    }
+                  }
                 />
               ),
             },

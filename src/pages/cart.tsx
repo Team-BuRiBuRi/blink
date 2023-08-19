@@ -1,7 +1,8 @@
 import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate';
+import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetProduct from '@/hooks/useGetProduct';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
-import { mockGetExchangeRate, mockGetProduct } from '@/libs';
+import { mockGetProduct } from '@/libs';
 import { LS_CART_ITEMS } from '@/libs/constants';
 import { CartItemInStorage } from '@/types/misc';
 import {
@@ -17,7 +18,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useState } from 'react';
 
 // import { GRClose } from 'react-icons/gr';
 
@@ -33,7 +34,7 @@ type CardProps = {
   quantity: number;
   setQuantity: (newQuantity: number) => void;
   onDelete: () => void;
-  exchangeInfo: AppliedExchangeRate;
+  exchangeInfo: GetAppliedExchangeRateResponse;
 };
 
 function Card(props: CardProps) {
@@ -131,9 +132,12 @@ export default function Cart() {
   const { item: cartItems, setItem: setCartItems } = useLocalStorageItem<
     CartItemInStorage[]
   >(LS_CART_ITEMS, []);
-  const exchangeInfo = mockGetExchangeRate();
+  const { getExchangeRate } = useGetExchangeRate();
+  const [exchangeInfo, setExchangeInfo] =
+    useState<GetAppliedExchangeRateResponse | null>(null);
 
   const [totalAmount, setTotalAmount] = useState(0);
+
   useEffect(() => {
     Promise.all(
       (cartItems ?? []).map(({ id, quantity }) => ({
@@ -150,7 +154,9 @@ export default function Cart() {
     });
   }, [cartItems]);
 
-  if (!cartItems) return;
+  useEffect(() => {
+    getExchangeRate().then((e) => e && setExchangeInfo(e));
+  }, [getExchangeRate]);
 
   const onCheckout = () => {
     // 결제 시도 시
@@ -175,34 +181,48 @@ export default function Cart() {
         <Box w='24px' h='24px' />
       </Flex>
       <Flex direction='column' gap='14px'>
-        {cartItems.map((c) => (
-          <Card
-            key={c.id}
-            id={c.id}
-            quantity={c.quantity}
-            setQuantity={(newQuantity: number) => {
-              setCartItems((prev) =>
-                (prev ?? []).reduce<CartItemInStorage[]>(
-                  (acc, cur) =>
-                    cur.id === c.id
-                      ? [...acc, { ...cur, quantity: newQuantity }]
-                      : [...acc, cur],
-                  []
-                )
-              );
-            }}
-            onDelete={() => {
-              setCartItems((prev) => prev?.filter((pc) => pc.id !== c.id));
-            }}
-            exchangeInfo={exchangeInfo}
-          />
-        ))}
+        {cartItems &&
+          cartItems.map((c) => (
+            <Card
+              key={c.id}
+              id={c.id}
+              quantity={c.quantity}
+              setQuantity={(newQuantity: number) => {
+                setCartItems((prev) =>
+                  (prev ?? []).reduce<CartItemInStorage[]>(
+                    (acc, cur) =>
+                      cur.id === c.id
+                        ? [...acc, { ...cur, quantity: newQuantity }]
+                        : [...acc, cur],
+                    []
+                  )
+                );
+              }}
+              onDelete={() => {
+                setCartItems((prev) => prev?.filter((pc) => pc.id !== c.id));
+              }}
+              exchangeInfo={
+                exchangeInfo || {
+                  ars: '0',
+                  btc: '0',
+                }
+              }
+            />
+          ))}
       </Flex>
       <Box flex={1} />
       <Flex gap='14px' pb='26px' direction='column'>
         <Flex justify='space-between' align='center'>
           <Text>Total</Text>
-          <DropdownWithExchangeRate dollar={totalAmount} rate={exchangeInfo} />
+          <DropdownWithExchangeRate
+            dollar={totalAmount}
+            rate={
+              exchangeInfo || {
+                ars: '0',
+                btc: '0',
+              }
+            }
+          />
         </Flex>
         <Button colorScheme='red' onClick={onCheckout} w='100%'>
           Checkout

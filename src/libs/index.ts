@@ -12,8 +12,3 @@ export const mockGetProduct = (productId: number): GetProductResponse => {
       'https://i.namu.wiki/i/c7fRtsUWjvUJV-E_6tRMcEw1lmxUQecAKRPqCTjuL5dV-nd05DMjqwQskwUa-vl7anSY0QFkonKAM6wwOnBn4rgJEMl3bULh--6YMTIBAvnBGONvGqKLSGp5kt4wxU-7NcNNNFVjZvIatWEAogDtyg.webp',
   };
 };
-
-export const mockGetExchangeRate = (): AppliedExchangeRate => ({
-  ars: '1.3',
-  btc: '1.5',
-});
