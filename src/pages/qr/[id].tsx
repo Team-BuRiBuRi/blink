@@ -142,8 +142,21 @@ const QRProductInfoPage = () => {
         </Flex>
       </Flex>
       <Box flex={1} />
-      <SimpleGrid columns={2} gap='11px' pb='26px'>
-        <Button colorScheme='gray'>Cancel</Button>
+      <SimpleGrid
+        columns={2}
+        gap='11px'
+        pb='26px'
+        display='flex'
+        justifyContent='center'
+      >
+        {/* <Button
+          colorScheme='gray'
+          onClick={() => {
+            // 창 닫기
+          }}
+        >
+          Cancel
+        </Button> */}
         <Button colorScheme='red' onClick={onSaveCartClick}>
           Add to Cart
         </Button>
