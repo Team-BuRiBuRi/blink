@@ -180,7 +180,12 @@ const QRProductInfoPage = () => {
         >
           Cancel
         </Button> */}
-        <Button colorScheme='red' onClick={onSaveCartClick}>
+        <Button
+          w={'100%'}
+          bgColor={'#E2674E'}
+          color={'white'}
+          onClick={onSaveCartClick}
+        >
           Add to Cart
         </Button>
       </SimpleGrid>
