@@ -2,6 +2,7 @@ import { DropdownWithExchangeRate } from '@/components/DropdownWithExchangeRate'
 import useGetExchangeRate from '@/hooks/useGetExchangeRate';
 import useGetProduct from '@/hooks/useGetProduct';
 import { useLocalStorageItem } from '@/hooks/useLocalStorage';
+import usePostBuyProduct from '@/hooks/usePostBuyProduct';
 import { LS_CART_ITEMS } from '@/libs/constants';
 import { CartItemInStorage } from '@/types/misc';
 import {
@@ -136,6 +137,7 @@ export default function Cart() {
     useState<GetAppliedExchangeRateResponse | null>(null);
 
   const [totalAmount, setTotalAmount] = useState(0);
+  const { postBuyProduct } = usePostBuyProduct();
 
   const { getProduct } = useGetProduct();
 
@@ -161,8 +163,18 @@ export default function Cart() {
     getExchangeRate().then((e) => e && setExchangeInfo(e));
   }, [getExchangeRate]);
 
-  const onCheckout = () => {
+  const onCheckout = async () => {
     // 결제 시도 시
+    if (!cartItems) return;
+
+    await postBuyProduct(
+      cartItems.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+      }))
+    );
+
+    setCartItems([]);
   };
 
   return (
