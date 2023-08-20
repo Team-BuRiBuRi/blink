@@ -45,8 +45,7 @@ const QRProductInfoPage = () => {
     });
   }, [productId, getProduct]);
 
-  if (!productId || typeof productId !== 'string')
-    return <div>잘못된페이지</div>;
+  if (!productId || typeof productId !== 'string') return <></>;
 
   const onMoveCartClick = () => {
     router.push('/cart');

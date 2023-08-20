@@ -43,8 +43,7 @@ const ProductInfoPage = () => {
     getShop({ id: 1 }).then((s) => s && getFee(parseFloat(s.fee)));
   }, [getShop]);
 
-  if (!productId || typeof productId !== 'string')
-    return <div>잘못된페이지</div>;
+  if (!productId || typeof productId !== 'string') return <></>;
   if (!productInfo) return <></>;
 
   return (
