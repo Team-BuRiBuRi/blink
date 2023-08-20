@@ -117,7 +117,20 @@ export default function Home() {
           {"Maria's Dashboard"}
         </Heading>
       </Flex>
-      <Tabs w='full' colorScheme='orange'>
+      <Tabs
+        w='full'
+        sx={{
+          '.chakra-tabs__tab': {
+            fontSize: '16px',
+            fontWeight: 600,
+            color: '#C1C1C1',
+            _selected: {
+              color: '#F45D44',
+              borderBottom: '4px solid #F45D44',
+            },
+          },
+        }}
+      >
         <TabList>
           <Tab w='full'>Exchange Rate</Tab>
           <Tab w='full'>Product List</Tab>
