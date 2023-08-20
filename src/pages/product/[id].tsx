@@ -75,28 +75,29 @@ const ProductInfoPage = () => {
         <Box cursor='pointer' w='24px' />
       </Flex>
       <Flex gap='14px' direction='column'>
-        <Text fontSize='20px' fontWeight={500}>
+        <Text color={'#F45D44'} fontSize='20px' fontWeight={500}>
           Item Name
         </Text>
         <Input defaultValue={productInfo.name} bgColor={'white'} />
       </Flex>
       <Flex gap='14px' direction='column'>
-        <Text fontSize='20px' fontWeight={500}>
+        <Text color={'#F45D44'} fontSize='20px' fontWeight={500}>
           Item Image
         </Text>
         <Image
           src={`data:image/jpg;base64,${productInfo.thumbnail}`}
           alt={productInfo.name}
-          w='100px'
-          h='100px'
+          w='200px'
+          h='200px'
           borderRadius='20px'
           bg='white'
           objectFit='contain'
+          margin={'0 auto'}
           boxShadow='3px 3px 40px 0px rgba(0, 0, 0, 0.05)'
         />
       </Flex>
       <Flex gap='14px' direction='column'>
-        <Text fontSize='20px' fontWeight={500}>
+        <Text color={'#F45D44'} fontSize='20px' fontWeight={500}>
           Price of {productInfo.name}
         </Text>
         <WhiteBox
@@ -156,7 +157,7 @@ const ProductInfoPage = () => {
         />
       </Flex>
       <Flex gap='14px' direction='column'>
-        <Text fontSize='20px' fontWeight={500}>
+        <Text color={'#F45D44'} fontSize='20px' fontWeight={500}>
           Sales and Profit
         </Text>
         <WhiteBox
@@ -211,7 +212,7 @@ const ProductInfoPage = () => {
         />
       </Flex>
       <Flex gap='14px' direction='column'>
-        <Text fontSize='20px' fontWeight={500}>
+        <Text color={'#F45D44'} fontSize='20px' fontWeight={500}>
           Manage Inventory
         </Text>
         <WhiteBox
