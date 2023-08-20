@@ -136,7 +136,7 @@ function Card(props: CardProps) {
             </Text>
           </Flex>
           <Flex>
-            <Text fontSize='14px' fontWeight={600}>
+            <Text fontSize='14px' fontWeight={600} mr='5px'>
               {formatMoney(
                 parseFloat(productInfo.price) *
                   parseFloat(props.exchangeInfo.btc),
