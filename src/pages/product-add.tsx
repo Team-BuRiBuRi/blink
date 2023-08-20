@@ -81,7 +81,7 @@ const AddProductPage = () => {
         <Input type='number' ref={buyQuantityInputRef} bgColor={'white'} />
       </Flex>
       <Flex gap='14px' direction='column'>
-        <Text fontSize='20px' fontWeight={500} bgColor={'white'}>
+        <Text fontSize='20px' fontWeight={500}>
           Sale Price
         </Text>
         <Input type='number' ref={priceInputRef} bgColor={'white'} />
