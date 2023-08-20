@@ -236,7 +236,7 @@ export default function Home() {
               </Button>
             </Flex>
           </TabPanel>
-          <TabPanel>
+          <TabPanel padding={'20px 0 0 0'}>
             <Flex direction={'column'} gap={'20px'}>
               <Flex justify={'space-between'}>
                 <Spacer />
@@ -313,38 +313,38 @@ const ProductEntity = ({ product, exchangeRate }: ProductEntityProp) => {
             alt='thumbnail'
           />
         </Center>
-        <Text fontSize={'18px'} fontWeight={500}>
+        <Text fontSize={'22px'} fontWeight={500}>
           {product.name}
         </Text>
       </Flex>
       <Flex flexDir={'row'}>
-        <Text fontSize={'11px'} fontWeight={600} mr='5px'>
+        <Text fontSize={'14px'} fontWeight={600} mr='5px'>
           {usdPrice}
         </Text>
         <Text
-          fontSize={'11px'}
+          fontSize={'14px'}
           fontWeight={500}
           color={'blackAlpha.600'}
           mr='9px'
         >
           USD
         </Text>
-        <Text fontSize={'11px'} fontWeight={600} mr='5px'>
+        <Text fontSize={'14px'} fontWeight={600} mr='5px'>
           {format('.4s')(arsPrice)}
         </Text>
         <Text
-          fontSize={'11px'}
+          fontSize={'14px'}
           fontWeight={500}
           color={'blackAlpha.600'}
           mr='9px'
         >
           ARS
         </Text>
-        <Text fontSize={'11px'} fontWeight={600} mr={'5px'}>
+        <Text fontSize={'14px'} fontWeight={600} mr={'5px'}>
           {format('.5e')(btcPrice)}
         </Text>
         <Text
-          fontSize={'11px'}
+          fontSize={'14px'}
           fontWeight={500}
           color={'blackAlpha.600'}
           mr={'9px'}
