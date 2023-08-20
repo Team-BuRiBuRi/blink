@@ -16,7 +16,6 @@ import {
   Input,
   Skeleton,
   Spacer,
-  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -102,7 +101,7 @@ export default function Home() {
   };
 
   return (
-    <Flex gap={'20px'} flexDir={'column'}>
+    <Flex gap={'20px'} flexDir={'column'} position='relative'>
       <Flex justifyContent={'space-between'} align={'center'} mt='24px'>
         <Image src={Logo} alt='logo' />
         <Icon as={AiOutlineSearch} boxSize={'24px'} />
@@ -222,11 +221,14 @@ export default function Home() {
               </Flex>
               <Spacer />
               <Button
-                w='full'
+                w='315px'
                 bgColor={'#E2674E'}
                 color={'white'}
                 borderRadius={6}
                 p={'6px'}
+                position='fixed'
+                left='calc(50% - 157px)'
+                bottom='26px'
                 mt={5}
                 onClick={async () => {
                   await updateUserPrice();
