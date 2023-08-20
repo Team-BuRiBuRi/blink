@@ -21,13 +21,14 @@ const ImageInput = forwardRef<HTMLInputElement, ImageInputProps>(
     };
     return (
       <Center
-        w='100px'
-        h='100px'
+        w='200px'
+        h='200px'
         borderRadius='14px'
         bg='#E2E8F0'
         cursor='pointer'
         onClick={props.onClickInput}
         overflow='hidden'
+        margin={'0 auto'}
       >
         <Input
           type='file'
