@@ -125,6 +125,12 @@ const ProductInfoPage = () => {
                   textAlign='right'
                   fontSize='16px'
                   fontWeight='600'
+                  onChange={(e) => {
+                    setProduct({
+                      ...productInfo,
+                      price: e.target.value,
+                    });
+                  }}
                   onBlur={(e) => {
                     patchProduct({
                       id: productInfo.id,
