@@ -118,28 +118,34 @@ function Card(props: CardProps) {
         <Flex direction='column' alignItems='flex-end'>
           <Spacer />
           <Flex gap='4px'>
-            <Text as={'b'}>
+            <Text fontSize='14px' fontWeight={600}>
               {formatMoney(
                 parseFloat(productInfo.price) *
                   parseFloat(props.exchangeInfo.ars),
                 'ARS'
               )}
             </Text>
-            <Text>ARS</Text>
-            <Text as={'b'}>
+            <Text fontSize='14px' fontWeight={500} color='#5f5f5f'>
+              ARS
+            </Text>
+            <Text fontSize='14px' fontWeight={600}>
               {formatMoney(parseFloat(productInfo.price), 'USD')}
             </Text>
-            <Text>USD</Text>
+            <Text fontSize='14px' fontWeight={500} color='#5f5f5f'>
+              USD
+            </Text>
           </Flex>
           <Flex>
-            <Text as={'b'}>
+            <Text fontSize='14px' fontWeight={600}>
               {formatMoney(
                 parseFloat(productInfo.price) *
                   parseFloat(props.exchangeInfo.btc),
                 'BTC'
               )}
             </Text>
-            <Text>BTC</Text>
+            <Text fontSize='14px' fontWeight={500} color='#5f5f5f'>
+              BTC
+            </Text>
           </Flex>
         </Flex>
       </Flex>

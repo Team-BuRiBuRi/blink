@@ -315,44 +315,48 @@ const ProductEntity = ({ product, exchangeRate }: ProductEntityProp) => {
             alt='thumbnail'
           />
         </Center>
-        <Text fontSize={'22px'} fontWeight={500}>
+        <Text fontSize={'18px'} fontWeight={500} color='#3d3d3d'>
           {product.name}
         </Text>
       </Flex>
-      <Flex flexDir={'row'}>
-        <Text fontSize={'14px'} fontWeight={600} mr='5px'>
-          {usdPrice}
-        </Text>
-        <Text
-          fontSize={'14px'}
-          fontWeight={500}
-          color={'blackAlpha.600'}
-          mr='9px'
-        >
-          USD
-        </Text>
-        <Text fontSize={'14px'} fontWeight={600} mr='5px'>
-          {format('.4s')(arsPrice)}
-        </Text>
-        <Text
-          fontSize={'14px'}
-          fontWeight={500}
-          color={'blackAlpha.600'}
-          mr='9px'
-        >
-          ARS
-        </Text>
-        <Text fontSize={'14px'} fontWeight={600} mr={'5px'}>
-          {format('.5e')(btcPrice)}
-        </Text>
-        <Text
-          fontSize={'14px'}
-          fontWeight={500}
-          color={'blackAlpha.600'}
-          mr={'9px'}
-        >
-          BTC
-        </Text>
+      <Flex flexDir={'column'} alignItems='flex-end'>
+        <Flex>
+          <Text fontSize={'14px'} fontWeight={600} mr='5px'>
+            {usdPrice}
+          </Text>
+          <Text
+            fontSize={'14px'}
+            fontWeight={500}
+            color={'blackAlpha.600'}
+            mr='9px'
+          >
+            USD
+          </Text>
+          <Text fontSize={'14px'} fontWeight={600} mr='5px'>
+            {format('.4s')(arsPrice)}
+          </Text>
+          <Text
+            fontSize={'14px'}
+            fontWeight={500}
+            color={'blackAlpha.600'}
+            mr='9px'
+          >
+            ARS
+          </Text>
+        </Flex>
+        <Flex>
+          <Text fontSize={'14px'} fontWeight={600} mr={'5px'}>
+            {format('.5e')(btcPrice)}
+          </Text>
+          <Text
+            fontSize={'14px'}
+            fontWeight={500}
+            color={'blackAlpha.600'}
+            mr={'9px'}
+          >
+            BTC
+          </Text>
+        </Flex>
       </Flex>
     </Flex>
   );
